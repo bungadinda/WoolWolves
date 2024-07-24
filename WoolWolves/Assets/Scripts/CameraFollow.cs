@@ -4,24 +4,22 @@ using UnityEngine;
 
 public class CameraFollow : MonoBehaviour
 {
-    [SerializeField] private Transform playerTransform;
-    Vector3 offset;
-    float smoothTime = 0.3f;
-    Vector3 velocity = Vector3.zero;
-    // Start is called before the first frame update
-    void Start()
-    {
-        offset = new Vector3(0, 25, 0);
-    }
+    [SerializeField] private Transform playerTransform; // Referensi ke Transform pemain
+    [SerializeField] private Vector3 offset = new Vector3(0, 25, -10); // Offset dapat diatur melalui Inspector
+    [SerializeField] private float smoothTime = 0.3f; // Juga dapat diatur melalui Inspector
+    private Vector3 velocity = Vector3.zero;
 
     // Update is called once per frame
     void LateUpdate()
     {
-        // Tentukan posisi yang diinginkan untuk kamera
+        if (playerTransform == null)
+        {
+            Debug.LogWarning("Player Transform tidak dihubungkan di Inspector.");
+            return;
+        }
+
         Vector3 targetPosition = playerTransform.position + offset;
-        // Gunakan Lerp untuk membuat gerakan kamera lebih halus
         Vector3 smoothedPosition = Vector3.SmoothDamp(transform.position, targetPosition, ref velocity, smoothTime);
-        // Atur posisi kamera
         transform.position = smoothedPosition;
     }
 }
