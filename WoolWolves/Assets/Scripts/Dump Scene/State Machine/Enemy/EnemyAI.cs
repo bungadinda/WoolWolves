@@ -21,6 +21,7 @@ public class EnemyAI : MonoBehaviour
     [HideInInspector] public IEnemyState currentState; // State saat ini
 
     private AudioSource footstepAudio;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -28,7 +29,7 @@ public class EnemyAI : MonoBehaviour
         footstepAudio = GetComponent<AudioSource>();
         animator = GetComponent<Animator>();
         player = GameObject.FindGameObjectWithTag("Player").transform;
-        TransitionToState(new Patrol());
+        TransitionToState(new Patrol()); // Mulai dengan state patroli
     }
 
     // Update is called once per frame
@@ -46,8 +47,15 @@ public class EnemyAI : MonoBehaviour
         currentState.Enter(this); // Memasuki state baru
     }
 
+    // Mengupdate metode PlayerInView
     public bool PlayerInView()
     {
+        // Mengambil referensi ke komponen PlayerController
+        PlayerController playerController = player.GetComponent<PlayerController>();
+
+        // Cek jika playerController tidak ditemukan atau tidak valid
+        if (playerController == null) return false;
+
         Collider[] targetsInViewRadius = Physics.OverlapSphere(transform.position, viewRadius, targetMask);
 
         foreach (Collider target in targetsInViewRadius)
@@ -61,23 +69,30 @@ public class EnemyAI : MonoBehaviour
 
                 if (!Physics.Raycast(transform.position, directionToTarget, distanceToTarget, obstacleMask))
                 {
-                    player = targetTransform;
-                    return true;
+                    // Tambahkan pemeriksaan apakah pemain tersembunyi
+                    if (!playerController.isHidden)
+                    {
+                        player = targetTransform;
+                        return true;
+                    }
                 }
             }
         }
         return false;
     }
 
-    
-
     // Mengecek apakah player berada dalam jangkauan serangan
     public bool PlayerInAttackRange()
     {
         if (player != null)
         {
-            float distanceToPlayer = Vector3.Distance(transform.position, player.position);
-            return distanceToPlayer <= attackRange;
+            PlayerController playerController = player.GetComponent<PlayerController>();
+
+            if (playerController != null && !playerController.isHidden) // Tambahkan cek status tersembunyi
+            {
+                float distanceToPlayer = Vector3.Distance(transform.position, player.position);
+                return distanceToPlayer <= attackRange;
+            }
         }
         return false;
     }
@@ -85,12 +100,12 @@ public class EnemyAI : MonoBehaviour
     // buat audio play dan stop
     public void PlayFootStep()
     {
-        if(!footstepAudio.isPlaying) footstepAudio.Play();
+        if (!footstepAudio.isPlaying) footstepAudio.Play();
     }
 
     public void StopFootStep()
     {
-        if(footstepAudio.isPlaying) footstepAudio.Stop();
+        if (footstepAudio.isPlaying) footstepAudio.Stop();
     }
 
     // Menggambar field of view di Scene view
@@ -116,5 +131,4 @@ public class EnemyAI : MonoBehaviour
         }
         return new Vector3(Mathf.Sin(angleInDegrees * Mathf.Deg2Rad), 0, Mathf.Cos(angleInDegrees * Mathf.Deg2Rad));
     }
-
 }

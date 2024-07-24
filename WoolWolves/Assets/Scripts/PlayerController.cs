@@ -3,19 +3,29 @@ using UnityEngine;
 public class PlayerController : MonoBehaviour
 {
     public float moveSpeed = 5f;
+    public bool isHidden = false; // Status sembunyi
     private Gameplay gameplay;
 
-    void Start()
+    private void Start()
     {
         gameplay = FindObjectOfType<Gameplay>();
     }
 
-    void Update()
+    private void Update()
     {
-        Move();
+        if (!isHidden) // Hanya izinkan gerakan jika tidak tersembunyi
+        {
+            Move();
+        }
+
+        // Cek input tombol J
+        if (Input.GetKeyDown(KeyCode.F))
+        {
+            ToggleHide();
+        }
     }
 
-    void Move()
+    private void Move()
     {
         float moveX = Input.GetAxis("Horizontal");
         float moveZ = Input.GetAxis("Vertical");
@@ -33,5 +43,27 @@ public class PlayerController : MonoBehaviour
         }
     }
 
+    private void ToggleHide()
+    {
+        if (IsNearBush())
+        {
+            isHidden = !isHidden;
+            // Sesuaikan tampilan atau status lainnya jika perlu
+            Debug.Log(isHidden ? "Player is now hiding" : "Player is no longer hiding");
+        }
+    }
 
+    private bool IsNearBush()
+    {
+        // Implementasikan deteksi jarak dengan semak-semak di sini
+        Collider[] hitColliders = Physics.OverlapSphere(transform.position, 1f); // Jarak deteksi
+        foreach (var hitCollider in hitColliders)
+        {
+            if (hitCollider.CompareTag("Bush"))
+            {
+                return true;
+            }
+        }
+        return false;
+    }
 }

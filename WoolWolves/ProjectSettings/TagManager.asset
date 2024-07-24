@@ -6,6 +6,7 @@ TagManager:
   tags:
   - sheep
   - Sheep
+  - Bush
   layers:
   - Default
   - TransparentFX
