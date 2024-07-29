@@ -49,7 +49,7 @@ public class Gameplay : MonoBehaviour
 
     void UpdateSheepCounter()
     {
-        sheepCounterText.text = "Sheep Eaten: " + sheepEaten;
+        sheepCounterText.text = "Sheep Eaten: " + sheepEaten + "/" + targetSheep;
     }
 
     public void EatSheep()

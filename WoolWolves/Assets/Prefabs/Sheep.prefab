@@ -3043,10 +3043,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   groundLayer:
     serializedVersion: 2
-    m_Bits: 256
+    m_Bits: 0
   playerLayer:
     serializedVersion: 2
-    m_Bits: 128
+    m_Bits: 0
 --- !u!195 &9011709432557844886
 NavMeshAgent:
   m_ObjectHideFlags: 0

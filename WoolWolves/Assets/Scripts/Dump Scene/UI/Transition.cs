@@ -1,23 +1,36 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
+using UnityEngine.SceneManagement;
+using System.Collections;
 
-public class Transition : MonoBehaviour
+public class ScreenFade : MonoBehaviour
 {
-    [SerializeField] private GameObject fadeObject;
-    public static Transition Ins;
+    public Image fadeImage;
+    public float fadeDuration = 1.0f;
 
-    void Awake() {
-        Ins = this;
+    private void Start()
+    {
+        fadeImage.gameObject.SetActive(false);
     }
 
-    public void FadeOut() {
-        Animator animator = fadeObject.GetComponent<Animator>();
-        animator.SetBool("isIn", false);
+    public void FadeToBlack()
+    {
+        StartCoroutine(FadeToBlackCoroutine());
     }
 
-    public void FadeIn() {
-        Animator animator = fadeObject.GetComponent<Animator>();
-        animator.SetBool("isIn", true);
+    private IEnumerator FadeToBlackCoroutine()
+    {
+        fadeImage.gameObject.SetActive(true);
+        float timer = 0f;
+
+        while (timer < fadeDuration)
+        {
+            timer += Time.deltaTime;
+            fadeImage.color = new Color(0f, 0f, 0f, timer / fadeDuration);
+            yield return null;
+        }
+
+        fadeImage.color = Color.black;
+        SceneManager.LoadScene("GameOver"); // Pindah ke scene GameOver setelah fade in
     }
 }

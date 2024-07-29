@@ -1,65 +1,38 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-using UnityEngine.AI;
-
 public class Patrol : IEnemyState
 {
     private EnemyAI enemy;
-    private float waitTime = 2f; // Waktu menunggu saat rotating
-    private float waitCounter;
-    private bool waiting;
+    private int currentPatrolIndex;
 
     public void Enter(EnemyAI enemy)
     {
         this.enemy = enemy;
         enemy.agent.speed = enemy.patrolSpeed;
-        enemy.StartCoroutine(StartPatrol());
-        enemy.PlayFootStep();
+        currentPatrolIndex = 0;
+        MoveToNextPatrolPoint();
     }
 
     public void Execute()
     {
-        // if the player can viewed by enemy, then switch to chase state
-        if(enemy.PlayerInView()) { enemy.TransitionToState(new Chase()); }
-        else if(waiting) 
+        if (enemy.PlayerInView())
         {
-            enemy.animator.SetBool("isWalk", false);
-            enemy.transform.Rotate(0, 45 * Time.deltaTime, 0);
-            Debug.Log("rotating");
-            waitCounter -= Time.deltaTime;
-            if(waitCounter <= 0)
-            {
-                waiting = false;
-                enemy.StartCoroutine(StartPatrol());
-            }
+            enemy.TransitionToState(new Chase());
+        }
+        else if (!enemy.agent.pathPending && enemy.agent.remainingDistance < 0.5f)
+        {
+            MoveToNextPatrolPoint();
         }
     }
 
     public void Exit()
     {
-        enemy.StopAllCoroutines();
-        enemy.StopFootStep();
     }
 
-    private IEnumerator StartPatrol()
+    private void MoveToNextPatrolPoint()
     {
-        while(true) 
-        {
-            Debug.Log("patrol");
-            Vector3 patrolPoint = enemy.patrolPoints[Random.Range(0, enemy.patrolPoints.Length)].position;
-            enemy.agent.SetDestination(patrolPoint);
-            enemy.animator.SetBool("isWalk", true);
-            while(enemy.agent.remainingDistance > enemy.agent.stoppingDistance)
-            {
-                Debug.Log("finish point");
-                yield return null; // waiting 'til the enemy at the patrol point
-            }
+        if (enemy.patrolPoints.Length == 0)
+            return;
 
-            waiting = true;
-            waitCounter = waitTime;
-            yield break;
-
-        }
+        enemy.agent.destination = enemy.patrolPoints[currentPatrolIndex].position;
+        currentPatrolIndex = (currentPatrolIndex + 1) % enemy.patrolPoints.Length;
     }
 }

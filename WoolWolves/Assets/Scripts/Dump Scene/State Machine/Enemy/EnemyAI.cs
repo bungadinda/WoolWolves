@@ -6,33 +6,30 @@ using UnityEngine.AI;
 public class EnemyAI : MonoBehaviour
 {
     public Transform[] patrolPoints;
-    public float patrolSpeed = 5f;   // Kecepatan patrol
-    public float chaseSpeed = 8f;    // Kecepatan chase
-    public float viewRadius = 10f;   // Radius pandangan
-    [Range(0, 360)]
-    public float viewAngle = 45f;    // Sudut pandang
-    public float attackRange = 2f;   // Jarak serangan
-    public LayerMask targetMask;     // Layer untuk target (player)
+    public float patrolSpeed = 5f;
+    public float chaseSpeed = 8f;
+    public float viewRadius = 10f;
+    [Range(0, 360)] public float viewAngle = 45f;
+    public float attackRange = 2f;
+    public LayerMask targetMask;
     public LayerMask obstacleMask;
-    [HideInInspector] public Animator animator;   // Layer untuk obstacles (tembok, dll)
-
-    [HideInInspector] public Transform player;         // Referensi ke player
+    public ScreenFade screenFade;
+    [HideInInspector] public Animator animator;
+    [HideInInspector] public Transform player;
     [HideInInspector] public NavMeshAgent agent;
-    [HideInInspector] public IEnemyState currentState; // State saat ini
+    [HideInInspector] public IEnemyState currentState;
 
     private AudioSource footstepAudio;
 
-    // Start is called before the first frame update
     void Start()
     {
         agent = GetComponent<NavMeshAgent>();
         footstepAudio = GetComponent<AudioSource>();
         animator = GetComponent<Animator>();
         player = GameObject.FindGameObjectWithTag("Player").transform;
-        TransitionToState(new Patrol()); // Mulai dengan state patroli
+        TransitionToState(new Patrol());
     }
 
-    // Update is called once per frame
     void Update()
     {
         currentState.Execute();
@@ -41,19 +38,15 @@ public class EnemyAI : MonoBehaviour
     public void TransitionToState(IEnemyState newState)
     {
         if (currentState != null)
-            currentState.Exit(); // Keluar dari state saat ini
+            currentState.Exit();
 
         currentState = newState;
-        currentState.Enter(this); // Memasuki state baru
+        currentState.Enter(this);
     }
 
-    // Mengupdate metode PlayerInView
     public bool PlayerInView()
     {
-        // Mengambil referensi ke komponen PlayerController
         PlayerController playerController = player.GetComponent<PlayerController>();
-
-        // Cek jika playerController tidak ditemukan atau tidak valid
         if (playerController == null) return false;
 
         Collider[] targetsInViewRadius = Physics.OverlapSphere(transform.position, viewRadius, targetMask);
@@ -69,7 +62,6 @@ public class EnemyAI : MonoBehaviour
 
                 if (!Physics.Raycast(transform.position, directionToTarget, distanceToTarget, obstacleMask))
                 {
-                    // Tambahkan pemeriksaan apakah pemain tersembunyi
                     if (!playerController.isHidden)
                     {
                         player = targetTransform;
@@ -81,14 +73,12 @@ public class EnemyAI : MonoBehaviour
         return false;
     }
 
-    // Mengecek apakah player berada dalam jangkauan serangan
     public bool PlayerInAttackRange()
     {
         if (player != null)
         {
             PlayerController playerController = player.GetComponent<PlayerController>();
-
-            if (playerController != null && !playerController.isHidden) // Tambahkan cek status tersembunyi
+            if (playerController != null && !playerController.isHidden)
             {
                 float distanceToPlayer = Vector3.Distance(transform.position, player.position);
                 return distanceToPlayer <= attackRange;
@@ -97,7 +87,6 @@ public class EnemyAI : MonoBehaviour
         return false;
     }
 
-    // buat audio play dan stop
     public void PlayFootStep()
     {
         if (!footstepAudio.isPlaying) footstepAudio.Play();
@@ -108,7 +97,6 @@ public class EnemyAI : MonoBehaviour
         if (footstepAudio.isPlaying) footstepAudio.Stop();
     }
 
-    // Menggambar field of view di Scene view
     void OnDrawGizmos()
     {
         Gizmos.color = Color.white;
@@ -122,7 +110,6 @@ public class EnemyAI : MonoBehaviour
         Gizmos.DrawLine(transform.position, transform.position + viewAngleB * viewRadius);
     }
 
-    // Menghitung arah dari sudut pandang
     public Vector3 DirFromAngle(float angleInDegrees, bool angleIsGlobal)
     {
         if (!angleIsGlobal)
@@ -130,5 +117,10 @@ public class EnemyAI : MonoBehaviour
             angleInDegrees += transform.eulerAngles.y;
         }
         return new Vector3(Mathf.Sin(angleInDegrees * Mathf.Deg2Rad), 0, Mathf.Cos(angleInDegrees * Mathf.Deg2Rad));
+    }
+
+    public void TriggerGameOver()
+    {
+        screenFade.FadeToBlack();
     }
 }
