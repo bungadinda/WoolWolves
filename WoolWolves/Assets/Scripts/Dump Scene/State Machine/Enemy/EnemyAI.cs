@@ -121,6 +121,16 @@ public class EnemyAI : MonoBehaviour
 
     public void TriggerGameOver()
     {
+        // Hentikan pergerakan enemy
+        agent.isStopped = true;
+
+        // Hentikan pergerakan player
+        PlayerController playerController = player.GetComponent<PlayerController>();
+        if (playerController != null)
+        {
+            playerController.SetMovable(false);
+        }
+
         screenFade.FadeToBlack();
     }
 }

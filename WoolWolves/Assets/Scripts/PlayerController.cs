@@ -5,6 +5,7 @@ public class PlayerController : MonoBehaviour
     public float moveSpeed = 5f;
     public bool isHidden = false; // Status sembunyi
     private Gameplay gameplay;
+    private bool isMovable = true; // Status untuk mengontrol gerakan pemain
 
     private void Start()
     {
@@ -13,15 +14,18 @@ public class PlayerController : MonoBehaviour
 
     private void Update()
     {
-        if (!isHidden) // Hanya izinkan gerakan jika tidak tersembunyi
+        if (isMovable)
         {
-            Move();
-        }
+            if (!isHidden) // Hanya izinkan gerakan jika tidak tersembunyi
+            {
+                Move();
+            }
 
-        // Cek input tombol J
-        if (Input.GetKeyDown(KeyCode.F))
-        {
-            ToggleHide();
+            // Cek input tombol J
+            if (Input.GetKeyDown(KeyCode.F))
+            {
+                ToggleHide();
+            }
         }
     }
 
@@ -65,5 +69,11 @@ public class PlayerController : MonoBehaviour
             }
         }
         return false;
+    }
+
+    // Method untuk mengatur status gerakan
+    public void SetMovable(bool movable)
+    {
+        isMovable = movable;
     }
 }
