@@ -115,6 +115,12 @@ public class EnemyAI : MonoBehaviour
         TransitionToState(new Investigate(location));
     }
 
+    public void ChasePlayer(Transform playerTransform)
+    {
+        player = playerTransform;
+        TransitionToState(new Chase());
+    }
+
     public Vector3 DirFromAngle(float angleInDegrees, bool angleIsGlobal)
     {
         if (!angleIsGlobal)

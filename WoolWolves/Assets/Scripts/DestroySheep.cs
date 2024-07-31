@@ -14,26 +14,38 @@ public class DestroySheep : MonoBehaviour
     {
         // Mencari semua objek dengan tag "sheep"
         GameObject[] sheepObjects = GameObject.FindGameObjectsWithTag("sheep");
+        GameObject[] dombaSilumanObjects = GameObject.FindGameObjectsWithTag("DombaSiluman");
 
+        // Memproses objek dengan tag "sheep"
         foreach (GameObject sheep in sheepObjects)
         {
-            // Menghitung jarak antara player dan objek dengan tag "sheep"
             float distanceToSheep = Vector3.Distance(transform.position, sheep.transform.position);
 
-            // Jika jarak lebih kecil atau sama dengan detectionRange dan tombol space ditekan
             if (distanceToSheep <= detectionRange && Input.GetKeyDown(KeyCode.Space))
             {
-                // Menghancurkan objek dengan tag "sheep"
                 Destroy(sheep);
-                // mendapatkan lokasi kematian sapi
                 Vector3 deathLocation = sheep.transform.position;
-                // cari game object dengan referensi enemy ai
                 EnemyAI enemyAI = FindObjectOfType<EnemyAI>();
-                // set lokasi investigasi
                 enemyAI.InvestigateLocation(deathLocation);
-
-                // Panggil fungsi untuk menambah counter domba yang dimakan
                 gameplay.EatSheep();
+            }
+        }
+
+        // Memproses objek dengan tag "DombaSiluman"
+        foreach (GameObject dombaSiluman in dombaSilumanObjects)
+        {
+            float distanceToDombaSiluman = Vector3.Distance(transform.position, dombaSiluman.transform.position);
+
+            if (distanceToDombaSiluman <= detectionRange && Input.GetKeyDown(KeyCode.Space))
+            {
+                Destroy(dombaSiluman);
+                PlayerController playerController = GetComponent<PlayerController>();
+                if (playerController != null)
+                {
+                    playerController.ApplySlowEffect();
+                    playerController.MakeScreenDirty();
+                    playerController.NotifyShepherd();
+                }
             }
         }
     }
