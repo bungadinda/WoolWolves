@@ -4,10 +4,13 @@ public class DestroySheep : MonoBehaviour
 {
     public float detectionRange = 3.0f; // Jarak dalam unit Unity di mana player dapat mendeteksi objek dengan tag "sheep"
     public Gameplay gameplay; // Referensi ke script Gameplay
+    public AlarmSystem alarmSystem;
+    
 
     void Start()
     {
         gameplay = FindObjectOfType<Gameplay>(); // Cari objek dengan script Gameplay
+        alarmSystem = FindObjectOfType<AlarmSystem>(); // referensii ke game object yang ada script alarm system
     }
 
     void Update()
@@ -23,10 +26,9 @@ public class DestroySheep : MonoBehaviour
 
             if (distanceToSheep <= detectionRange && Input.GetKeyDown(KeyCode.Space))
             {
-                Destroy(sheep);
                 Vector3 deathLocation = sheep.transform.position;
-                EnemyAI enemyAI = FindObjectOfType<EnemyAI>();
-                enemyAI.InvestigateLocation(deathLocation);
+                Destroy(sheep);
+                alarmSystem.TriggerAlarm(deathLocation);
                 gameplay.EatSheep();
             }
         }
