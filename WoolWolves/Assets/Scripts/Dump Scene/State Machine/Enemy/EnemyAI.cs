@@ -110,6 +110,11 @@ public class EnemyAI : MonoBehaviour
         Gizmos.DrawLine(transform.position, transform.position + viewAngleB * viewRadius);
     }
 
+    public void InvestigateLocation(Vector3 location)
+    {
+        TransitionToState(new Investigate(location));
+    }
+
     public Vector3 DirFromAngle(float angleInDegrees, bool angleIsGlobal)
     {
         if (!angleIsGlobal)

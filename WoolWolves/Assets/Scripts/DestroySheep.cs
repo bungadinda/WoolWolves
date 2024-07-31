@@ -25,6 +25,12 @@ public class DestroySheep : MonoBehaviour
             {
                 // Menghancurkan objek dengan tag "sheep"
                 Destroy(sheep);
+                // mendapatkan lokasi kematian sapi
+                Vector3 deathLocation = sheep.transform.position;
+                // cari game object dengan referensi enemy ai
+                EnemyAI enemyAI = FindObjectOfType<EnemyAI>();
+                // set lokasi investigasi
+                enemyAI.InvestigateLocation(deathLocation);
 
                 // Panggil fungsi untuk menambah counter domba yang dimakan
                 gameplay.EatSheep();
