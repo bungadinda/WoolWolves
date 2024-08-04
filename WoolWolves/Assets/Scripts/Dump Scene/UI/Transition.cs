@@ -5,8 +5,14 @@ using System.Collections;
 
 public class ScreenFade : MonoBehaviour
 {
+    public static ScreenFade ins;
     public Image fadeImage;
     public float fadeDuration = 1.0f;
+
+    private void Awake()
+    {
+        ins = this;
+    }
 
     private void Start()
     {
@@ -31,6 +37,7 @@ public class ScreenFade : MonoBehaviour
         }
 
         fadeImage.color = Color.black;
-        SceneManager.LoadScene("GameOver"); // Pindah ke scene GameOver setelah fade in
+        // SceneManager.LoadScene("GameOver");
+        // Pindah ke scene GameOver setelah fade in
     }
 }

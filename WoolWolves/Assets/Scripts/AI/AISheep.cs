@@ -28,7 +28,6 @@ public class AISheep : MonoBehaviour
 
     public void Patrol()
     {
-        Debug.Log("patrol");
         if(!setWalkPoint) SearchDestination();
         if(setWalkPoint) agent.SetDestination(destination);
         if(Vector3.Distance(transform.position, destination) < 10) setWalkPoint = false;
@@ -57,7 +56,7 @@ public class AISheep : MonoBehaviour
         
         // Memastikan tujuan baru berada pada NavMesh
         
-            agent.speed = 20f;
+            agent.speed = 20;
             agent.SetDestination(newDestination); // Menetapkan tujuan baru pada NavMeshAgent
             Debug.Log("lawrii");
             isRunAway = true;

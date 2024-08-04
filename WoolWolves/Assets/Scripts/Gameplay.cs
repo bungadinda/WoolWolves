@@ -4,13 +4,18 @@ using TMPro;
 
 public class Gameplay : MonoBehaviour
 {
+    [Header("UI Gameplay")]
     public TextMeshProUGUI sheepCounterText;
     public TextMeshProUGUI timerText;
     private int sheepEaten = 0;
+    // variable gameplay
     public int targetSheep = 10; // Jumlah domba yang harus dimakan
     public float gameDuration = 60.0f; // Durasi permainan dalam detik
     private float timer; // Waktu tersisa dalam permainan
     private bool isGameOver = false;
+    [Header("Screens")]
+    [SerializeField] private GameObject bgLose;
+    [SerializeField] private GameObject bgwin;
 
     void Start()
     {
@@ -63,20 +68,20 @@ public class Gameplay : MonoBehaviour
         }
     }
 
-    void WinGame()
+    public void WinGame()
     {
         // Implementasi kemenangan permainan
-        Debug.Log("You Win!");
         // Misalnya, pindah ke scene YouWin
-        SceneManager.LoadScene("YouWin");
+        // SceneManager.LoadScene("YouWin");
+        Time.timeScale = 0;
+        bgwin.SetActive(true);
     }
 
-    void GameOver()
+    public void GameOver()
     {
         // Implementasi game over
-        Debug.Log("Game Over!");
         isGameOver = true;
-        // Misalnya, pindah ke scene GameOver
-        SceneManager.LoadScene("GameOver");
+        Time.timeScale = 0;
+        bgLose.SetActive(true);
     }
 }

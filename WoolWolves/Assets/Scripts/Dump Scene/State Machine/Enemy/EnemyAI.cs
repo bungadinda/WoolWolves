@@ -20,6 +20,12 @@ public class EnemyAI : MonoBehaviour
     [HideInInspector] public IEnemyState currentState;
 
     private AudioSource footstepAudio;
+    public Gameplay gameplay;
+
+    void Awake()
+    {
+        gameplay = GameObject.FindObjectOfType<Gameplay>();
+    }
 
     void Start()
     {
@@ -141,7 +147,7 @@ public class EnemyAI : MonoBehaviour
         {
             playerController.SetMovable(false);
         }
-
-        screenFade.FadeToBlack();
+        // trigger ke gameplay buat jalanin function game over
+        gameplay.GameOver();
     }
 }
