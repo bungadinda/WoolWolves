@@ -81,7 +81,7 @@ public class Gameplay : MonoBehaviour
     {
         // Implementasi game over
         isGameOver = true;
-        Time.timeScale = 0;
+
         bgLose.SetActive(true);
     }
 }

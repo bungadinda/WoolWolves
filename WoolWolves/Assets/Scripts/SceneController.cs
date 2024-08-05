@@ -35,4 +35,17 @@ public class SceneController : MonoBehaviour
         yield return new WaitForSeconds(1f);
         SceneManager.LoadScene(nameScene);
     }
+
+    public void RestartGame()
+    {
+        StartCoroutine(RestartScene());
+    }
+
+    private IEnumerator RestartScene()
+    {
+        Time.timeScale = 1;
+        fadeAnim.SetTrigger("load");
+        yield return new WaitForSeconds(1f);
+        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+    }
 }
