@@ -49,12 +49,12 @@ public class Gameplay : MonoBehaviour
     {
         int minutes = Mathf.FloorToInt(timer / 60);
         int seconds = Mathf.FloorToInt(timer % 60);
-        timerText.text = string.Format("Time: {0:00}:{1:00}", minutes, seconds);
+        timerText.text = string.Format("{0:00}:{1:00}", minutes, seconds);
     }
 
     void UpdateSheepCounter()
     {
-        sheepCounterText.text = "Sheep Eaten: " + sheepEaten + "/" + targetSheep;
+        sheepCounterText.text = + sheepEaten + "/" + targetSheep;
     }
 
     public void EatSheep()

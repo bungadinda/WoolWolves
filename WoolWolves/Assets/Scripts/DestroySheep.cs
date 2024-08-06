@@ -1,19 +1,33 @@
 using UnityEngine;
+using UnityEngine.UI; // Tambahkan namespace UI
+using System.Collections;
 
 public class DestroySheep : MonoBehaviour
 {
     public float detectionRange = 3.0f; // Jarak dalam unit Unity di mana player dapat mendeteksi objek dengan tag "sheep"
     public Gameplay gameplay; // Referensi ke script Gameplay
     public AlarmSystem alarmSystem;
-    
+    public Button eatSheepButton; // Tambahkan referensi ke Button
 
     void Start()
     {
         gameplay = FindObjectOfType<Gameplay>(); // Cari objek dengan script Gameplay
-        alarmSystem = FindObjectOfType<AlarmSystem>(); // referensii ke game object yang ada script alarm system
+        alarmSystem = FindObjectOfType<AlarmSystem>(); // Cari objek dengan script AlarmSystem
     }
 
     void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.Space))
+        {
+            DestroyNearbySheep(); // Panggil fungsi untuk menghancurkan domba saat tombol Space ditekan
+            if (eatSheepButton != null)
+            {
+                StartCoroutine(ButtonPressEffect()); // Jalankan coroutine untuk efek button
+            }
+        }
+    }
+
+    public void DestroyNearbySheep()
     {
         // Mencari semua objek dengan tag "sheep"
         GameObject[] sheepObjects = GameObject.FindGameObjectsWithTag("sheep");
@@ -24,7 +38,7 @@ public class DestroySheep : MonoBehaviour
         {
             float distanceToSheep = Vector3.Distance(transform.position, sheep.transform.position);
 
-            if (distanceToSheep <= detectionRange && Input.GetKeyDown(KeyCode.Space))
+            if (distanceToSheep <= detectionRange)
             {
                 Vector3 deathLocation = sheep.transform.position;
                 Destroy(sheep);
@@ -38,7 +52,7 @@ public class DestroySheep : MonoBehaviour
         {
             float distanceToDombaSiluman = Vector3.Distance(transform.position, dombaSiluman.transform.position);
 
-            if (distanceToDombaSiluman <= detectionRange && Input.GetKeyDown(KeyCode.Space))
+            if (distanceToDombaSiluman <= detectionRange)
             {
                 Destroy(dombaSiluman);
                 PlayerController playerController = GetComponent<PlayerController>();
@@ -50,5 +64,25 @@ public class DestroySheep : MonoBehaviour
                 }
             }
         }
+    }
+
+    // Fungsi untuk button
+    public void DestroyNearbySheepButton()
+    {
+        DestroyNearbySheep();
+    }
+
+    // Coroutine untuk memberikan efek button
+    private IEnumerator ButtonPressEffect()
+    {
+        var buttonColors = eatSheepButton.colors;
+        Color originalColor = buttonColors.normalColor;
+        buttonColors.normalColor = buttonColors.pressedColor;
+        eatSheepButton.colors = buttonColors;
+
+        yield return new WaitForSeconds(0.1f); // Durasi efek pressed color
+
+        buttonColors.normalColor = originalColor;
+        eatSheepButton.colors = buttonColors;
     }
 }
