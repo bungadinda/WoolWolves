@@ -20,7 +20,10 @@ public class EnemyAI : MonoBehaviour
     [HideInInspector] public IEnemyState currentState;
 
     private AudioSource footstepAudio;
+    private MeshFilter viewMeshFilter;
+    private Mesh viewMesh;
     public Gameplay gameplay;
+    public int meshResolution = 10;
 
     void Awake()
     {
@@ -33,12 +36,21 @@ public class EnemyAI : MonoBehaviour
         footstepAudio = GetComponent<AudioSource>();
         animator = GetComponent<Animator>();
         player = GameObject.FindGameObjectWithTag("Player").transform;
+        viewMeshFilter = GetComponentInChildren<MeshFilter>(); // Inisialisasi MeshFilter
+        viewMesh = new Mesh();
+        viewMesh.name = "View Mesh";
+        viewMeshFilter.mesh = viewMesh;
         TransitionToState(new Patrol());
     }
 
     void Update()
     {
         currentState.Execute();
+    }
+
+    void LateUpdate()
+    {
+        DrawFieldOfView(); // Panggil fungsi untuk menggambar ViewCone setiap frame
     }
 
     public void TransitionToState(IEnemyState newState)
@@ -61,6 +73,9 @@ public class EnemyAI : MonoBehaviour
         {
             Transform targetTransform = target.transform;
             Vector3 directionToTarget = (targetTransform.position - transform.position).normalized;
+
+            // Menggambar raycast di gameplay dengan warna merah
+            Debug.DrawRay(transform.position, directionToTarget * viewRadius, Color.red);
 
             if (Vector3.Angle(transform.forward, directionToTarget) < viewAngle / 2)
             {
@@ -134,6 +149,58 @@ public class EnemyAI : MonoBehaviour
             angleInDegrees += transform.eulerAngles.y;
         }
         return new Vector3(Mathf.Sin(angleInDegrees * Mathf.Deg2Rad), 0, Mathf.Cos(angleInDegrees * Mathf.Deg2Rad));
+    }
+
+    // Fungsi untuk menggambar ViewCone
+    void DrawFieldOfView()
+    {
+        int stepCount = Mathf.RoundToInt(viewAngle * meshResolution);
+        float stepAngleSize = viewAngle / stepCount;
+        List<Vector3> viewPoints = new List<Vector3>();
+
+        for (int i = 0; i <= stepCount; i++)
+        {
+            float angle = transform.eulerAngles.y - viewAngle / 2 + stepAngleSize * i;
+            viewPoints.Add(ViewCast(angle));
+        }
+
+        int vertexCount = viewPoints.Count + 1;
+        Vector3[] vertices = new Vector3[vertexCount];
+        int[] triangles = new int[(vertexCount - 2) * 3];
+
+        vertices[0] = Vector3.zero;
+
+        for (int i = 0; i < vertexCount - 1; i++)
+        {
+            vertices[i + 1] = transform.InverseTransformPoint(viewPoints[i]);
+
+            if (i < vertexCount - 2)
+            {
+                triangles[i * 3] = 0;
+                triangles[i * 3 + 1] = i + 1;
+                triangles[i * 3 + 2] = i + 2;
+            }
+        }
+
+        viewMesh.Clear();
+        viewMesh.vertices = vertices;
+        viewMesh.triangles = triangles;
+        viewMesh.RecalculateNormals();
+    }
+
+    Vector3 ViewCast(float globalAngle)
+    {
+        Vector3 dir = DirFromAngle(globalAngle, true);
+        RaycastHit hit;
+
+        if (Physics.Raycast(transform.position, dir, out hit, viewRadius, obstacleMask))
+        {
+            return hit.point;
+        }
+        else
+        {
+            return transform.position + dir * viewRadius;
+        }
     }
 
     public void TriggerGameOver()

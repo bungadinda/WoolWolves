@@ -1,0 +1,37 @@
+{
+  "Version": 1,
+  "WorkspaceRootPath": "E:\\IGDX\\WoolWolves B\\WoolWolves\\WoolWolves\\",
+  "Documents": [
+    {
+      "AbsoluteMoniker": "D:0:0:{BF0F5E08-5541-A7D8-32AF-C9244898F8FC}|Assembly-CSharp.csproj|e:\\igdx\\woolwolves b\\woolwolves\\woolwolves\\assets\\scripts\\dump scene\\state machine\\enemy\\enemyai.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{BF0F5E08-5541-A7D8-32AF-C9244898F8FC}|Assembly-CSharp.csproj|solutionrelative:assets\\scripts\\dump scene\\state machine\\enemy\\enemyai.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    }
+  ],
+  "DocumentGroupContainers": [
+    {
+      "Orientation": 0,
+      "VerticalTabListWidth": 256,
+      "DocumentGroups": [
+        {
+          "DockedWidth": 200,
+          "SelectedChildIndex": 0,
+          "Children": [
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "EnemyAI.cs",
+              "DocumentMoniker": "E:\\IGDX\\WoolWolves B\\WoolWolves\\WoolWolves\\Assets\\Scripts\\Dump Scene\\State Machine\\Enemy\\EnemyAI.cs",
+              "RelativeDocumentMoniker": "Assets\\Scripts\\Dump Scene\\State Machine\\Enemy\\EnemyAI.cs",
+              "ToolTip": "E:\\IGDX\\WoolWolves B\\WoolWolves\\WoolWolves\\Assets\\Scripts\\Dump Scene\\State Machine\\Enemy\\EnemyAI.cs",
+              "RelativeToolTip": "Assets\\Scripts\\Dump Scene\\State Machine\\Enemy\\EnemyAI.cs",
+              "ViewState": "AQIAAK0AAAAAAAAAAAAgwNwAAAAAAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-08-08T14:43:55.316Z",
+              "EditorCaption": ""
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
