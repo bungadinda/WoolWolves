@@ -11,17 +11,13 @@ public class PlayerController : MonoBehaviour
     private float originalMoveSpeed;
     public Image dirtyScreenEffect;
 
-    public Mesh sphereMesh; // Mesh sphere yang akan digunakan
-    public Material sphereMaterial; // Material untuk sphere
-    public float transformDuration = 5f; // Durasi transformasi menjadi sphere
+    //public GameObject sheepPrefab; // Prefab domba yang akan digunakan
+    public float transformDuration = 5f; // Durasi transformasi menjadi domba
     public float skillCooldown = 15f; // Cooldown skill transformasi
     private bool isCooldown = false; // Flag untuk melacak cooldown
 
-    public Vector3 sphereScale = new Vector3(2f, 2f, 2f); // Ukuran sphere yang diinginkan
-    private Mesh originalMesh; // Menyimpan mesh asli serigala
-    private Material[] originalMaterials; // Menyimpan material asli serigala
-    private MeshFilter meshFilter;
-    private MeshRenderer meshRenderer;
+    private GameObject sheepInstance; // Instance dari prefab domba
+    public GameObject originalWolf; // Menyimpan referensi ke objek asli serigala
 
     private void Start()
     {
@@ -32,29 +28,21 @@ public class PlayerController : MonoBehaviour
             dirtyScreenEffect.enabled = false;
         }
 
-        // Mendapatkan referensi ke komponen MeshFilter dan MeshRenderer
-        meshFilter = GetComponent<MeshFilter>();
-        meshRenderer = GetComponent<MeshRenderer>();
+        // Menyimpan referensi ke game object serigala asli
+        //originalWolf = this.gameObject;
 
-        // Cek apakah MeshFilter ada
-        if (meshFilter != null)
+        // Pastikan sheepPrefab tidak diaktifkan di awal
+        /*
+        if (sheepPrefab != null)
         {
-            originalMesh = meshFilter.mesh;
+            sheepInstance = Instantiate(sheepPrefab, transform.position, transform.rotation);
+            sheepInstance.SetActive(false); // Pastikan ini hanya terjadi sekali, di awal
         }
         else
         {
-            Debug.LogError("MeshFilter component is missing on this GameObject.");
+            Debug.LogError("Sheep Prefab is missing!");
         }
-
-        // Cek apakah MeshRenderer ada
-        if (meshRenderer != null)
-        {
-            originalMaterials = meshRenderer.materials;
-        }
-        else
-        {
-            Debug.LogError("MeshRenderer component is missing on this GameObject.");
-        }
+        */
     }
 
     private void Update()
@@ -73,7 +61,7 @@ public class PlayerController : MonoBehaviour
 
             if (Input.GetKeyDown(KeyCode.T)) // Kunci untuk transformasi
             {
-                TransformToSphere();
+                //TransformToSheep();
             }
         }
     }
@@ -173,36 +161,29 @@ public class PlayerController : MonoBehaviour
         }
     }
 
-    public void TransformToSphere()
+    /*
+    public void TransformToSheep()
     {
         if (!isCooldown)
         {
-            Debug.Log("Attempting to transform into sphere...");
+            Debug.Log("Attempting to transform into sheep...");
 
-            // Ganti mesh dan material serigala dengan sphere
-            if (meshFilter != null && sphereMesh != null)
-            {
-                meshFilter.mesh = sphereMesh;
-                transform.localScale = sphereScale; // Atur ukuran sphere
-            }
-            else
-            {
-                Debug.LogError("MeshFilter or SphereMesh is missing!");
-                return;
-            }
-
-            if (meshRenderer != null && sphereMaterial != null)
-            {
-                meshRenderer.material = sphereMaterial;
-            }
-            else
-            {
-                Debug.LogError("MeshRenderer or SphereMaterial is missing!");
-            }
-
-            Debug.Log("Player transformed into a sphere!");
-
+            // Start coroutine first before deactivating the player
             StartCoroutine(RevertToWolfAfterDuration());
+
+            // Menjadikan sheepInstance sebagai child dari originalWolf agar mengikuti transformasinya
+            sheepInstance.transform.SetParent(originalWolf.transform);
+            sheepInstance.transform.localPosition = Vector3.zero;
+            sheepInstance.transform.localRotation = Quaternion.identity;
+
+            // Matikan objek serigala dan aktifkan prefab domba
+            originalWolf.SetActive(false);
+            sheepInstance.SetActive(true);
+
+            Debug.Log("Sheep instance is now active: " + sheepInstance.activeSelf); // Tambahkan ini
+
+            Debug.Log("Player transformed into a sheep!");
+
             StartCoroutine(TransformCooldown());
         }
         else
@@ -210,23 +191,17 @@ public class PlayerController : MonoBehaviour
             Debug.Log("Skill is on cooldown.");
         }
     }
+    */
+
+
 
     private IEnumerator RevertToWolfAfterDuration()
     {
         yield return new WaitForSeconds(transformDuration);
 
-        // Kembalikan mesh dan material asli serigala
-        if (meshFilter != null)
-        {
-            meshFilter.mesh = originalMesh;
-        }
-        if (meshRenderer != null)
-        {
-            meshRenderer.materials = originalMaterials;
-        }
-
-        // Kembalikan ukuran asli
-        transform.localScale = Vector3.one; // Ganti dengan ukuran asli jika berbeda
+        // Matikan prefab domba dan aktifkan kembali objek serigala
+        sheepInstance.SetActive(false);
+        originalWolf.SetActive(true);
 
         Debug.Log("Player reverted to wolf!");
     }

@@ -11,7 +11,6 @@ public class WolfSkills : PlayerSkills, ISkillsHandler
         playerController = GetComponent<PlayerController>();
     }
 
-    // Update is called once per frame
     public override void Update()
     {
         base.Update();
@@ -23,10 +22,10 @@ public class WolfSkills : PlayerSkills, ISkillsHandler
         if (Input.GetKeyDown(KeyCode.Alpha1)) MakeSound();
         if (Input.GetKeyDown(KeyCode.Return)) EatSheep();
 
-        // Tambahkan pemanggilan skill transformasi
+        // Ubah untuk memanggil transformasi domba
         if (Input.GetKeyDown(KeyCode.Alpha2))
         {
-            playerController.TransformToSphere();
+            //playerController.TransformToSheep();
         }
     }
 
