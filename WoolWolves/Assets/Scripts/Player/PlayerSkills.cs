@@ -6,6 +6,7 @@ public class PlayerSkills : MonoBehaviour
     protected static bool isWolf = true;  // Default to Wolf
     [SerializeField] private GameObject wolfPrefab;
     [SerializeField] private GameObject sheepPrefab;
+    [SerializeField] private GameObject poofVFXPrefab;  // Prefab untuk efek poof asap
     [SerializeField] private float transformDuration = 5f;  // Durasi transformasi
     [SerializeField] private float cooldownDuration = 10f;  // Durasi cooldown
     private bool isOnCooldown = false;
@@ -21,6 +22,9 @@ public class PlayerSkills : MonoBehaviour
 
     private IEnumerator Transforming()
     {
+        // Menampilkan efek asap sebelum transformasi
+        PlayPoofVFX();
+
         // Mulai transformasi menjadi domba
         isWolf = false;
         wolfPrefab.SetActive(false);
@@ -29,6 +33,9 @@ public class PlayerSkills : MonoBehaviour
 
         // Menunggu durasi transformasi
         yield return new WaitForSeconds(transformDuration);
+
+        // Menampilkan efek asap sebelum kembali menjadi serigala
+        PlayPoofVFX();
 
         // Kembali menjadi serigala
         isWolf = true;
@@ -40,6 +47,12 @@ public class PlayerSkills : MonoBehaviour
         isOnCooldown = true;
         yield return new WaitForSeconds(cooldownDuration);
         isOnCooldown = false;
-        Debug.Log("Skill is colldown!");
+        Debug.Log("Skill is cooldown!");
+    }
+
+    private void PlayPoofVFX()
+    {
+        // Instantiate efek asap pada posisi serigala/domba
+        Instantiate(poofVFXPrefab, transform.position, Quaternion.identity);
     }
 }

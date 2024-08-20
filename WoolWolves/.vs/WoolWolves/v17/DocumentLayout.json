@@ -3,23 +3,27 @@
   "WorkspaceRootPath": "E:\\IGDX\\WoolWolves B\\WoolWolves\\WoolWolves\\",
   "Documents": [
     {
+      "AbsoluteMoniker": "D:0:0:{BF0F5E08-5541-A7D8-32AF-C9244898F8FC}|Assembly-CSharp.csproj|e:\\igdx\\woolwolves b\\woolwolves\\woolwolves\\assets\\scripts\\player\\playerskills.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{BF0F5E08-5541-A7D8-32AF-C9244898F8FC}|Assembly-CSharp.csproj|solutionrelative:assets\\scripts\\player\\playerskills.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{BF0F5E08-5541-A7D8-32AF-C9244898F8FC}|Assembly-CSharp.csproj|E:\\IGDX\\WoolWolves B\\WoolWolves\\WoolWolves\\assets\\scripts\\player\\wolfskills.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{BF0F5E08-5541-A7D8-32AF-C9244898F8FC}|Assembly-CSharp.csproj|solutionrelative:assets\\scripts\\player\\wolfskills.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
       "AbsoluteMoniker": "D:0:0:{BF0F5E08-5541-A7D8-32AF-C9244898F8FC}|Assembly-CSharp.csproj|e:\\igdx\\woolwolves b\\woolwolves\\woolwolves\\assets\\scripts\\player\\playercontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{BF0F5E08-5541-A7D8-32AF-C9244898F8FC}|Assembly-CSharp.csproj|solutionrelative:assets\\scripts\\player\\playercontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{BF0F5E08-5541-A7D8-32AF-C9244898F8FC}|Assembly-CSharp.csproj|e:\\igdx\\woolwolves b\\woolwolves\\woolwolves\\assets\\scripts\\player\\wolfskills.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{BF0F5E08-5541-A7D8-32AF-C9244898F8FC}|Assembly-CSharp.csproj|solutionrelative:assets\\scripts\\player\\wolfskills.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{BF0F5E08-5541-A7D8-32AF-C9244898F8FC}|Assembly-CSharp.csproj|e:\\igdx\\woolwolves b\\woolwolves\\woolwolves\\assets\\scripts\\dump scene\\state machine\\enemy\\enemyai.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "AbsoluteMoniker": "D:0:0:{BF0F5E08-5541-A7D8-32AF-C9244898F8FC}|Assembly-CSharp.csproj|E:\\IGDX\\WoolWolves B\\WoolWolves\\WoolWolves\\assets\\scripts\\dump scene\\state machine\\enemy\\enemyai.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{BF0F5E08-5541-A7D8-32AF-C9244898F8FC}|Assembly-CSharp.csproj|solutionrelative:assets\\scripts\\dump scene\\state machine\\enemy\\enemyai.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{BF0F5E08-5541-A7D8-32AF-C9244898F8FC}|Assembly-CSharp.csproj|e:\\igdx\\woolwolves b\\woolwolves\\woolwolves\\assets\\scripts\\dump scene\\state machine\\enemy\\states\\investigate.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "AbsoluteMoniker": "D:0:0:{BF0F5E08-5541-A7D8-32AF-C9244898F8FC}|Assembly-CSharp.csproj|E:\\IGDX\\WoolWolves B\\WoolWolves\\WoolWolves\\assets\\scripts\\dump scene\\state machine\\enemy\\states\\investigate.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{BF0F5E08-5541-A7D8-32AF-C9244898F8FC}|Assembly-CSharp.csproj|solutionrelative:assets\\scripts\\dump scene\\state machine\\enemy\\states\\investigate.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{BF0F5E08-5541-A7D8-32AF-C9244898F8FC}|Assembly-CSharp.csproj|e:\\igdx\\woolwolves b\\woolwolves\\woolwolves\\assets\\scripts\\dump scene\\state machine\\enemy\\states\\chase.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "AbsoluteMoniker": "D:0:0:{BF0F5E08-5541-A7D8-32AF-C9244898F8FC}|Assembly-CSharp.csproj|E:\\IGDX\\WoolWolves B\\WoolWolves\\WoolWolves\\assets\\scripts\\dump scene\\state machine\\enemy\\states\\chase.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{BF0F5E08-5541-A7D8-32AF-C9244898F8FC}|Assembly-CSharp.csproj|solutionrelative:assets\\scripts\\dump scene\\state machine\\enemy\\states\\chase.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
@@ -34,11 +38,24 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 2,
+          "SelectedChildIndex": 0,
           "Children": [
             {
               "$type": "Document",
-              "DocumentIndex": 3,
+              "DocumentIndex": 0,
+              "Title": "PlayerSkills.cs",
+              "DocumentMoniker": "E:\\IGDX\\WoolWolves B\\WoolWolves\\WoolWolves\\Assets\\Scripts\\Player\\PlayerSkills.cs",
+              "RelativeDocumentMoniker": "Assets\\Scripts\\Player\\PlayerSkills.cs",
+              "ToolTip": "E:\\IGDX\\WoolWolves B\\WoolWolves\\WoolWolves\\Assets\\Scripts\\Player\\PlayerSkills.cs",
+              "RelativeToolTip": "Assets\\Scripts\\Player\\PlayerSkills.cs",
+              "ViewState": "AQIAABwAAAAAAAAAAAAmwDoAAAAAAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-08-20T08:36:01.092Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 4,
               "Title": "Investigate.cs",
               "DocumentMoniker": "E:\\IGDX\\WoolWolves B\\WoolWolves\\WoolWolves\\Assets\\Scripts\\Dump Scene\\State Machine\\Enemy\\States\\Investigate.cs",
               "RelativeDocumentMoniker": "Assets\\Scripts\\Dump Scene\\State Machine\\Enemy\\States\\Investigate.cs",
@@ -46,12 +63,11 @@
               "RelativeToolTip": "Assets\\Scripts\\Dump Scene\\State Machine\\Enemy\\States\\Investigate.cs",
               "ViewState": "AQIAAAAAAAAAAAAAAAAAABIAAAAuAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-08-18T15:40:17.314Z",
-              "EditorCaption": ""
+              "WhenOpened": "2024-08-18T15:40:17.314Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 4,
+              "DocumentIndex": 5,
               "Title": "Chase.cs",
               "DocumentMoniker": "E:\\IGDX\\WoolWolves B\\WoolWolves\\WoolWolves\\Assets\\Scripts\\Dump Scene\\State Machine\\Enemy\\States\\Chase.cs",
               "RelativeDocumentMoniker": "Assets\\Scripts\\Dump Scene\\State Machine\\Enemy\\States\\Chase.cs",
@@ -59,18 +75,17 @@
               "RelativeToolTip": "Assets\\Scripts\\Dump Scene\\State Machine\\Enemy\\States\\Chase.cs",
               "ViewState": "AQIAAAAAAAAAAAAAAAAAABEAAAAFAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-08-18T15:39:13.73Z",
-              "EditorCaption": ""
+              "WhenOpened": "2024-08-18T15:39:13.73Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 0,
+              "DocumentIndex": 2,
               "Title": "PlayerController.cs",
               "DocumentMoniker": "E:\\IGDX\\WoolWolves B\\WoolWolves\\WoolWolves\\Assets\\Scripts\\Player\\PlayerController.cs",
               "RelativeDocumentMoniker": "Assets\\Scripts\\Player\\PlayerController.cs",
               "ToolTip": "E:\\IGDX\\WoolWolves B\\WoolWolves\\WoolWolves\\Assets\\Scripts\\Player\\PlayerController.cs",
               "RelativeToolTip": "Assets\\Scripts\\Player\\PlayerController.cs",
-              "ViewState": "AQIAANMAAAAAAAAAAAAqwPEAAAAAAAAA",
+              "ViewState": "AQIAACsAAAAAAAAAAAAQwNgAAAAAAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2024-08-18T14:17:37.888Z",
               "EditorCaption": ""
@@ -90,7 +105,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 5,
+              "DocumentIndex": 6,
               "Title": "Lit.shader",
               "DocumentMoniker": "E:\\IGDX\\WoolWolves B\\WoolWolves\\WoolWolves\\Library\\PackageCache\\com.unity.render-pipelines.universal@14.0.11\\Shaders\\Lit.shader",
               "RelativeDocumentMoniker": "Library\\PackageCache\\com.unity.render-pipelines.universal@14.0.11\\Shaders\\Lit.shader",
@@ -102,7 +117,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 2,
+              "DocumentIndex": 3,
               "Title": "EnemyAI.cs",
               "DocumentMoniker": "E:\\IGDX\\WoolWolves B\\WoolWolves\\WoolWolves\\Assets\\Scripts\\Dump Scene\\State Machine\\Enemy\\EnemyAI.cs",
               "RelativeDocumentMoniker": "Assets\\Scripts\\Dump Scene\\State Machine\\Enemy\\EnemyAI.cs",
@@ -110,8 +125,7 @@
               "RelativeToolTip": "Assets\\Scripts\\Dump Scene\\State Machine\\Enemy\\EnemyAI.cs",
               "ViewState": "AQIAAAAAAAAAAAAAAAAAANwAAAAAAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-08-08T14:43:55.316Z",
-              "EditorCaption": ""
+              "WhenOpened": "2024-08-08T14:43:55.316Z"
             }
           ]
         }
