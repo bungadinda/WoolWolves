@@ -11,13 +11,8 @@ public class PlayerController : MonoBehaviour
     private float originalMoveSpeed;
     public Image dirtyScreenEffect;
 
-    //public GameObject sheepPrefab; // Prefab domba yang akan digunakan
-    public float transformDuration = 5f; // Durasi transformasi menjadi domba
-    public float skillCooldown = 15f; // Cooldown skill transformasi
-    private bool isCooldown = false; // Flag untuk melacak cooldown
-
-    private GameObject sheepInstance; // Instance dari prefab domba
-    public GameObject originalWolf; // Menyimpan referensi ke objek asli serigala
+    private Material bushMaterial; // Material dari bush yang saat ini disentuh oleh player
+    private Collider currentBushCollider; // Collider dari bush yang sedang disentuh oleh player
 
     private void Start()
     {
@@ -27,22 +22,6 @@ public class PlayerController : MonoBehaviour
         {
             dirtyScreenEffect.enabled = false;
         }
-
-        // Menyimpan referensi ke game object serigala asli
-        //originalWolf = this.gameObject;
-
-        // Pastikan sheepPrefab tidak diaktifkan di awal
-        /*
-        if (sheepPrefab != null)
-        {
-            sheepInstance = Instantiate(sheepPrefab, transform.position, transform.rotation);
-            sheepInstance.SetActive(false); // Pastikan ini hanya terjadi sekali, di awal
-        }
-        else
-        {
-            Debug.LogError("Sheep Prefab is missing!");
-        }
-        */
     }
 
     private void Update()
@@ -58,11 +37,6 @@ public class PlayerController : MonoBehaviour
             {
                 ToggleHide();
             }
-
-            if (Input.GetKeyDown(KeyCode.T)) // Kunci untuk transformasi
-            {
-                //TransformToSheep();
-            }
         }
     }
 
@@ -72,6 +46,72 @@ public class PlayerController : MonoBehaviour
         float moveZ = Input.GetAxis("Vertical");
         Vector3 move = new Vector3(moveX, 0, moveZ) * moveSpeed * Time.deltaTime;
         transform.Translate(move);
+    }
+
+    private void ToggleHide()
+    {
+        if (currentBushCollider != null)
+        {
+            isHidden = !isHidden;
+            Debug.Log(isHidden ? "Player is now hiding" : "Player is no longer hiding");
+
+            SetBushTransparency(isHidden); // Ubah transparansi hanya pada bush yang sedang ditabrak
+        }
+        else
+        {
+            Debug.Log("No bush nearby to hide in.");
+        }
+    }
+
+    private void SetBushTransparency(bool isHidden)
+    {
+        if (bushMaterial != null)
+        {
+            if (isHidden)
+            {
+                bushMaterial.SetFloat("_Surface", 1); // 1 untuk Transparent
+                bushMaterial.SetOverrideTag("RenderType", "Transparent");
+                bushMaterial.renderQueue = (int)UnityEngine.Rendering.RenderQueue.Transparent;
+                Color color = bushMaterial.color;
+                color.a = 0.3f; // Set transparansi
+                bushMaterial.color = color;
+            }
+            else
+            {
+                bushMaterial.SetFloat("_Surface", 0); // 0 untuk Opaque
+                bushMaterial.SetOverrideTag("RenderType", "Opaque");
+                bushMaterial.renderQueue = (int)UnityEngine.Rendering.RenderQueue.Geometry;
+                Color color = bushMaterial.color;
+                color.a = 1f; // Kembalikan ke tidak transparan
+                bushMaterial.color = color;
+            }
+        }
+        else
+        {
+            Debug.LogError("Bush material is not assigned!");
+        }
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.CompareTag("Bush"))
+        {
+            Debug.Log("Entered bush trigger. Bush name: " + other.name);
+            currentBushCollider = other; // Simpan referensi collider bush
+            bushMaterial = other.GetComponent<Renderer>().material; // Simpan referensi material bush
+        }
+    }
+
+    private void OnTriggerExit(Collider other)
+    {
+        if (other.CompareTag("Bush") && other == currentBushCollider)
+        {
+            Debug.Log("Exited bush trigger. Bush name: " + other.name);
+            // Kembalikan bush ke kondisi awal saat keluar dari bush
+            SetBushTransparency(false);
+            currentBushCollider = null;
+            bushMaterial = null;
+        }
     }
 
     private void OnCollisionEnter(Collision collision)
@@ -124,28 +164,6 @@ public class PlayerController : MonoBehaviour
         }
     }
 
-    private void ToggleHide()
-    {
-        if (IsNearBush())
-        {
-            isHidden = !isHidden;
-            Debug.Log(isHidden ? "Player is now hiding" : "Player is no longer hiding");
-        }
-    }
-
-    private bool IsNearBush()
-    {
-        Collider[] hitColliders = Physics.OverlapSphere(transform.position, 1f);
-        foreach (var hitCollider in hitColliders)
-        {
-            if (hitCollider.CompareTag("Bush"))
-            {
-                return true;
-            }
-        }
-        return false;
-    }
-
     public void SetMovable(bool movable)
     {
         isMovable = movable;
@@ -159,58 +177,5 @@ public class PlayerController : MonoBehaviour
         {
             shepherd.ChasePlayer(transform);
         }
-    }
-
-    /*
-    public void TransformToSheep()
-    {
-        if (!isCooldown)
-        {
-            Debug.Log("Attempting to transform into sheep...");
-
-            // Start coroutine first before deactivating the player
-            StartCoroutine(RevertToWolfAfterDuration());
-
-            // Menjadikan sheepInstance sebagai child dari originalWolf agar mengikuti transformasinya
-            sheepInstance.transform.SetParent(originalWolf.transform);
-            sheepInstance.transform.localPosition = Vector3.zero;
-            sheepInstance.transform.localRotation = Quaternion.identity;
-
-            // Matikan objek serigala dan aktifkan prefab domba
-            originalWolf.SetActive(false);
-            sheepInstance.SetActive(true);
-
-            Debug.Log("Sheep instance is now active: " + sheepInstance.activeSelf); // Tambahkan ini
-
-            Debug.Log("Player transformed into a sheep!");
-
-            StartCoroutine(TransformCooldown());
-        }
-        else
-        {
-            Debug.Log("Skill is on cooldown.");
-        }
-    }
-    */
-
-
-
-    private IEnumerator RevertToWolfAfterDuration()
-    {
-        yield return new WaitForSeconds(transformDuration);
-
-        // Matikan prefab domba dan aktifkan kembali objek serigala
-        sheepInstance.SetActive(false);
-        originalWolf.SetActive(true);
-
-        Debug.Log("Player reverted to wolf!");
-    }
-
-    private IEnumerator TransformCooldown()
-    {
-        isCooldown = true;
-        yield return new WaitForSeconds(skillCooldown);
-        isCooldown = false;
-        Debug.Log("Skill cooldown ended, can transform again.");
     }
 }
