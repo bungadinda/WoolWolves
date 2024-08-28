@@ -114,23 +114,23 @@ public class PlayerController : MonoBehaviour
         }
     }
 
-    private void OnCollisionEnter(Collision collision)
-    {
-        if (collision.gameObject.CompareTag("sheep"))
-        {
-            Debug.Log("Collided with sheep");
-            Destroy(collision.gameObject);
-            gameplay.EatSheep();
-        }
-        else if (collision.gameObject.CompareTag("DombaSiluman"))
-        {
-            Debug.Log("Collided with DombaSiluman");
-            Destroy(collision.gameObject);
-            ApplySlowEffect();
-            MakeScreenDirty();
-            NotifyShepherd();
-        }
-    }
+    // private void OnCollisionEnter(Collision collision)
+    // {
+    //     if (collision.gameObject.CompareTag("sheep"))
+    //     {
+    //         Debug.Log("Collided with sheep");
+    //         Destroy(collision.gameObject);
+    //         gameplay.EatSheep();
+    //     }
+    //     else if (collision.gameObject.CompareTag("DombaSiluman"))
+    //     {
+    //         Debug.Log("Collided with DombaSiluman");
+    //         Destroy(collision.gameObject);
+    //         ApplySlowEffect();
+    //         MakeScreenDirty();
+    //         NotifyShepherd();
+    //     }
+    // }
 
     public void ApplySlowEffect()
     {

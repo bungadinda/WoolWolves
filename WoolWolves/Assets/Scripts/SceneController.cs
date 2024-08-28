@@ -25,27 +25,33 @@ public class SceneController : MonoBehaviour
 
     public void LoadToScene(string sceneName)
     {
+        
+        
         StartCoroutine(LoadSceneWithAnimation(sceneName));
     }
 
     private IEnumerator LoadSceneWithAnimation(string nameScene)
     {
-        Time.timeScale = 1;
+        fadeAnim.updateMode = AnimatorUpdateMode.UnscaledTime;
         fadeAnim.SetTrigger("load");
-        yield return new WaitForSeconds(1f);
+        yield return new WaitForSecondsRealtime(1f);
         SceneManager.LoadScene(nameScene);
+        Time.timeScale = 1;
     }
 
     public void RestartGame()
     {
+        
+        
         StartCoroutine(RestartScene());
     }
 
     private IEnumerator RestartScene()
     {
-        Time.timeScale = 1;
+        fadeAnim.updateMode = AnimatorUpdateMode.UnscaledTime;
         fadeAnim.SetTrigger("load");
-        yield return new WaitForSeconds(1f);
+        yield return new WaitForSecondsRealtime(1f);
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+        Time.timeScale = 1;
     }
 }

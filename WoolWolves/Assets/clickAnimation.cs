@@ -29,8 +29,9 @@ public class clickAnimation : MonoBehaviour
 
     IEnumerator StartGame(string nameScene)
     {
+        animatorClick.updateMode = AnimatorUpdateMode.UnscaledTime;
         animatorClick.Play("button-clicked");
-        yield return new WaitForSeconds(1f);
+        yield return new WaitForSecondsRealtime(1f);
         SceneController.Instance.LoadToScene(nameScene);
     }
 }
