@@ -8161,7 +8161,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 49bd2d865293943c8b574cc0a41855d4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  playerTransform: {fileID: 102827845}
+  playerTransform: {fileID: 289558274}
   offset: {x: -5, y: 30, z: -10}
   smoothTime: 0.3
 --- !u!114 &330585549
