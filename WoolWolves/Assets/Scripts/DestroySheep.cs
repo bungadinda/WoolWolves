@@ -41,9 +41,9 @@ public class DestroySheep : MonoBehaviour
             if (distanceToSheep <= detectionRange)
             {
                 Vector3 deathLocation = sheep.transform.position;
+                gameplay.EatSheep();
                 Destroy(sheep);
                 alarmSystem.TriggerAlarm(deathLocation);
-                gameplay.EatSheep();
             }
         }
 
@@ -69,7 +69,7 @@ public class DestroySheep : MonoBehaviour
     // Fungsi untuk button
     public void DestroyNearbySheepButton()
     {
-        DestroyNearbySheep();
+        
     }
 
     // Coroutine untuk memberikan efek button

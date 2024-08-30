@@ -26,18 +26,19 @@ public class PlayerController : MonoBehaviour
 
     private void Update()
     {
-        if (isMovable)
-        {
-            if (!isHidden)
-            {
-                Move();
-            }
+        // if (isMovable)
+        // {
+        //     if (!isHidden)
+        //     {
+        //         Move();
+        //     }
 
-            if (Input.GetKeyDown(KeyCode.F))
-            {
-                ToggleHide();
-            }
-        }
+        //     if (Input.GetKeyDown(KeyCode.F))
+        //     {
+        //         ToggleHide();
+        //     }
+        // }
+        Move();
     }
 
     private void Move()
@@ -50,17 +51,9 @@ public class PlayerController : MonoBehaviour
 
     private void ToggleHide()
     {
-        if (currentBushCollider != null)
-        {
-            isHidden = !isHidden;
-            Debug.Log(isHidden ? "Player is now hiding" : "Player is no longer hiding");
-
-            SetBushTransparency(isHidden); // Ubah transparansi hanya pada bush yang sedang ditabrak
-        }
-        else
-        {
-            Debug.Log("No bush nearby to hide in.");
-        }
+        isHidden = !isHidden;
+        Debug.Log(isHidden ? "Player is now hiding" : "Player is no longer hiding");
+        // Ubah transparansi hanya pada bush yang sedang ditabrak
     }
 
     private void SetBushTransparency(bool isHidden)
@@ -97,6 +90,7 @@ public class PlayerController : MonoBehaviour
         if (other.CompareTag("Bush"))
         {
             Debug.Log("Entered bush trigger. Bush name: " + other.name);
+            ToggleHide();
             currentBushCollider = other; // Simpan referensi collider bush
             bushMaterial = other.GetComponent<Renderer>().material; // Simpan referensi material bush
             SetBushTransparency(true);
@@ -108,10 +102,9 @@ public class PlayerController : MonoBehaviour
         if (other.CompareTag("Bush") && other == currentBushCollider)
         {
             Debug.Log("Exited bush trigger. Bush name: " + other.name);
+            ToggleHide();
             // Kembalikan bush ke kondisi awal saat keluar dari bush
             SetBushTransparency(false);
-            currentBushCollider = null;
-            bushMaterial = null;
         }
     }
 

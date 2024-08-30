@@ -54,12 +54,13 @@ public class Gameplay : MonoBehaviour
 
     void UpdateSheepCounter()
     {
-        sheepCounterText.text = + sheepEaten + "/" + targetSheep;
+        sheepCounterText.text = sheepEaten + "/" + targetSheep;
     }
 
     public void EatSheep()
     {
-        sheepEaten++;
+        sheepEaten += 1;
+        Debug.Log(sheepEaten);
         UpdateSheepCounter();
 
         if (sheepEaten >= targetSheep)
