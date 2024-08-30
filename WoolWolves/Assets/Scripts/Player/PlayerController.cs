@@ -99,6 +99,7 @@ public class PlayerController : MonoBehaviour
             Debug.Log("Entered bush trigger. Bush name: " + other.name);
             currentBushCollider = other; // Simpan referensi collider bush
             bushMaterial = other.GetComponent<Renderer>().material; // Simpan referensi material bush
+            SetBushTransparency(true);
         }
     }
 
