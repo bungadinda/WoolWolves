@@ -26840,6 +26840,7 @@ GameObject:
   - component: {fileID: 1989565325}
   - component: {fileID: 1989565324}
   - component: {fileID: 1989565329}
+  - component: {fileID: 1989565330}
   m_Layer: 5
   m_Name: Canvas
   m_TagString: Untagged
@@ -26859,8 +26860,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 725fe6de7813d6f4f80b9184280ef957, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  sheepCounterText: {fileID: 0}
-  timerText: {fileID: 0}
+  sheepCounterText: {fileID: 1507292805}
+  timerText: {fileID: 623581823}
   targetSheep: 5
   gameDuration: 60
   bgLose: {fileID: 1893680947}
@@ -26972,6 +26973,27 @@ Animation:
   m_PlayAutomatically: 1
   m_AnimatePhysics: 0
   m_CullingType: 0
+--- !u!95 &1989565330
+Animator:
+  serializedVersion: 5
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1989565323}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 0}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
 --- !u!1 &1990046016 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: e9fa5b8cc0e340d45b6099013a018acc,
