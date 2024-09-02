@@ -45,9 +45,23 @@ public class PlayerController : MonoBehaviour
     {
         float moveX = Input.GetAxis("Horizontal");
         float moveZ = Input.GetAxis("Vertical");
-        Vector3 move = new Vector3(moveX, 0, moveZ) * moveSpeed * Time.deltaTime;
-        transform.Translate(move);
+
+        Vector3 move = new Vector3(moveX, 0, moveZ).normalized; // Normalisasi untuk mendapatkan arah yang benar
+
+        // Jika ada input arah, lakukan rotasi
+        if (move.magnitude >= 0.1f)
+        {
+            // Tentukan sudut rotasi dari arah yang dituju
+            float targetAngle = Mathf.Atan2(move.x, move.z) * Mathf.Rad2Deg;
+
+            // Rotasi player ke arah yang dituju
+            transform.rotation = Quaternion.Euler(0f, targetAngle, 0f);
+
+            // Gerakkan player ke arah yang dituju
+            transform.Translate(move * moveSpeed * Time.deltaTime, Space.World);
+        }
     }
+
 
     private void ToggleHide()
     {
