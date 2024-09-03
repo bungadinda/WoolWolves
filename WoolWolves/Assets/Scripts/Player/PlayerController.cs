@@ -38,27 +38,40 @@ public class PlayerController : MonoBehaviour
         //         ToggleHide();
         //     }
         // }
-        Move();
+        RotatePlayer();
+        MovePlayer();
     }
 
-    private void Move()
+    private void MovePlayer()
     {
         float moveX = Input.GetAxis("Horizontal");
         float moveZ = Input.GetAxis("Vertical");
 
-        Vector3 move = new Vector3(moveX, 0, moveZ).normalized; // Normalisasi untuk mendapatkan arah yang benar
+        Vector3 move = new Vector3(moveX, 0, moveZ).normalized;
+
+        // Hanya gerakkan player jika ada input
+        if (move.magnitude >= 0.1f)
+        {
+            transform.Translate(move * moveSpeed * Time.deltaTime, Space.World);
+        }
+    }
+
+    // Fungsi untuk merotasi player berdasarkan input WASD
+    private void RotatePlayer()
+    {
+        float moveX = Input.GetAxis("Horizontal");
+        float moveZ = Input.GetAxis("Vertical");
+
+        Vector3 move = new Vector3(moveX, 0, moveZ).normalized;
 
         // Jika ada input arah, lakukan rotasi
         if (move.magnitude >= 0.1f)
         {
             // Tentukan sudut rotasi dari arah yang dituju
-            float targetAngle = Mathf.Atan2(move.x, move.z) * Mathf.Rad2Deg;
+            float targetAngle = Mathf.Atan2(moveX, moveZ) * Mathf.Rad2Deg;
 
             // Rotasi player ke arah yang dituju
             transform.rotation = Quaternion.Euler(0f, targetAngle, 0f);
-
-            // Gerakkan player ke arah yang dituju
-            transform.Translate(move * moveSpeed * Time.deltaTime, Space.World);
         }
     }
 
