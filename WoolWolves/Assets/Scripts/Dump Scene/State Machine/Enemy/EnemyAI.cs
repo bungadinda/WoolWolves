@@ -65,7 +65,7 @@ public class EnemyAI : MonoBehaviour
     public bool PlayerInView()
     {
         PlayerController playerController = player.GetComponent<PlayerController>();
-        if (playerController == null) return false;
+        if (playerController == null || playerController.isHidden) return false;
 
         Collider[] targetsInViewRadius = Physics.OverlapSphere(transform.position, viewRadius, targetMask);
 
@@ -73,9 +73,6 @@ public class EnemyAI : MonoBehaviour
         {
             Transform targetTransform = target.transform;
             Vector3 directionToTarget = (targetTransform.position - transform.position).normalized;
-
-            // Menggambar raycast di gameplay dengan warna merah
-            Debug.DrawRay(transform.position, directionToTarget * viewRadius, Color.red);
 
             if (Vector3.Angle(transform.forward, directionToTarget) < viewAngle / 2)
             {
@@ -108,6 +105,7 @@ public class EnemyAI : MonoBehaviour
         return false;
     }
 
+
     public void PlayFootStep()
     {
         if (!footstepAudio.isPlaying) footstepAudio.Play();
@@ -138,8 +136,12 @@ public class EnemyAI : MonoBehaviour
 
     public void ChasePlayer(Transform playerTransform)
     {
-        player = playerTransform;
-        TransitionToState(new Chase());
+        PlayerController playerController = playerTransform.GetComponent<PlayerController>();
+        if (playerController != null && !playerController.isHidden)
+        {
+            player = playerTransform;
+            TransitionToState(new Chase());
+        }
     }
 
     public Vector3 DirFromAngle(float angleInDegrees, bool angleIsGlobal)
@@ -214,7 +216,7 @@ public class EnemyAI : MonoBehaviour
         {
             playerController.SetMovable(false);
         }
-        // trigger ke gameplay buat jalanin function game over
+        // Trigger ke gameplay untuk menjalankan fungsi GameOver
         gameplay.GameOver();
     }
 }

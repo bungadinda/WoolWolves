@@ -47,22 +47,17 @@ public class AISheep : MonoBehaviour
         }
     }
 
-    public void RunAway(Vector3 location, float distance)
+    public void RunAway(Vector3 destination, float speed)
     {
-        isRunAway = true;
-        Vector3 directionAway = transform.position - location; // Menghitung arah menjauh dari lokasi
-        Vector3 newDestination = transform.position + directionAway * distance; // Menghitung tujuan baru (menjauh)
-
-        
-        // Memastikan tujuan baru berada pada NavMesh
-        
-            agent.speed = 20;
-            agent.SetDestination(newDestination); // Menetapkan tujuan baru pada NavMeshAgent
-            Debug.Log("lawrii");
-            isRunAway = true;
-
-            Invoke("ResumePatrol", 3f);
-        
+        if (agent.isOnNavMesh && agent.isActiveAndEnabled)
+        {
+            agent.speed = speed;
+            agent.SetDestination(destination);
+        }
+        else
+        {
+            Debug.LogWarning("Cannot set destination. NavMeshAgent is either not active or not on NavMesh.");
+        }
     }
 
     void ResumePatrol()

@@ -1,23 +1,23 @@
 using UnityEngine;
 using UnityEngine.UI;
-using System.Collections;
 
 public class PlayerController : MonoBehaviour
 {
     public float moveSpeed = 5f;
-    public bool isHidden = false;
     private Gameplay gameplay;
     private bool isMovable = true;
     private float originalMoveSpeed;
     public Image dirtyScreenEffect;
+    public bool isHidden { get; private set; }
 
-    private Material bushMaterial; // Material dari bush yang saat ini disentuh oleh player
-    private Collider currentBushCollider; // Collider dari bush yang sedang disentuh oleh player
+
+    private BushHiding currentBush; // Referensi ke script BushHiding
 
     private void Start()
     {
         gameplay = FindObjectOfType<Gameplay>();
         originalMoveSpeed = moveSpeed;
+        isHidden = false;
         if (dirtyScreenEffect != null)
         {
             dirtyScreenEffect.enabled = false;
@@ -26,18 +26,6 @@ public class PlayerController : MonoBehaviour
 
     private void Update()
     {
-        // if (isMovable)
-        // {
-        //     if (!isHidden)
-        //     {
-        //         Move();
-        //     }
-
-        //     if (Input.GetKeyDown(KeyCode.F))
-        //     {
-        //         ToggleHide();
-        //     }
-        // }
         RotatePlayer();
         MovePlayer();
     }
@@ -49,14 +37,12 @@ public class PlayerController : MonoBehaviour
 
         Vector3 move = new Vector3(moveX, 0, moveZ).normalized;
 
-        // Hanya gerakkan player jika ada input
         if (move.magnitude >= 0.1f)
         {
             transform.Translate(move * moveSpeed * Time.deltaTime, Space.World);
         }
     }
 
-    // Fungsi untuk merotasi player berdasarkan input WASD
     private void RotatePlayer()
     {
         float moveX = Input.GetAxis("Horizontal");
@@ -64,51 +50,10 @@ public class PlayerController : MonoBehaviour
 
         Vector3 move = new Vector3(moveX, 0, moveZ).normalized;
 
-        // Jika ada input arah, lakukan rotasi
         if (move.magnitude >= 0.1f)
         {
-            // Tentukan sudut rotasi dari arah yang dituju
             float targetAngle = Mathf.Atan2(moveX, moveZ) * Mathf.Rad2Deg;
-
-            // Rotasi player ke arah yang dituju
             transform.rotation = Quaternion.Euler(0f, targetAngle, 0f);
-        }
-    }
-
-
-    private void ToggleHide()
-    {
-        isHidden = !isHidden;
-        Debug.Log(isHidden ? "Player is now hiding" : "Player is no longer hiding");
-        // Ubah transparansi hanya pada bush yang sedang ditabrak
-    }
-
-    private void SetBushTransparency(bool isHidden)
-    {
-        if (bushMaterial != null)
-        {
-            if (isHidden)
-            {
-                bushMaterial.SetFloat("_Surface", 1); // 1 untuk Transparent
-                bushMaterial.SetOverrideTag("RenderType", "Transparent");
-                bushMaterial.renderQueue = (int)UnityEngine.Rendering.RenderQueue.Transparent;
-                Color color = bushMaterial.color;
-                color.a = 0.3f; // Set transparansi
-                bushMaterial.color = color;
-            }
-            else
-            {
-                bushMaterial.SetFloat("_Surface", 0); // 0 untuk Opaque
-                bushMaterial.SetOverrideTag("RenderType", "Opaque");
-                bushMaterial.renderQueue = (int)UnityEngine.Rendering.RenderQueue.Geometry;
-                Color color = bushMaterial.color;
-                color.a = 1f; // Kembalikan ke tidak transparan
-                bushMaterial.color = color;
-            }
-        }
-        else
-        {
-            Debug.LogError("Bush material is not assigned!");
         }
     }
 
@@ -116,42 +61,22 @@ public class PlayerController : MonoBehaviour
     {
         if (other.CompareTag("Bush"))
         {
-            Debug.Log("Entered bush trigger. Bush name: " + other.name);
-            ToggleHide();
-            currentBushCollider = other; // Simpan referensi collider bush
-            bushMaterial = other.GetComponent<Renderer>().material; // Simpan referensi material bush
-            SetBushTransparency(true);
+            currentBush = other.GetComponent<BushHiding>();
+            if (currentBush != null)
+            {
+                currentBush.ToggleHide(true);
+            }
         }
     }
 
     private void OnTriggerExit(Collider other)
     {
-        if (other.CompareTag("Bush") && other == currentBushCollider)
+        if (other.CompareTag("Bush") && currentBush != null && other.GetComponent<BushHiding>() == currentBush)
         {
-            Debug.Log("Exited bush trigger. Bush name: " + other.name);
-            ToggleHide();
-            // Kembalikan bush ke kondisi awal saat keluar dari bush
-            SetBushTransparency(false);
+            currentBush.ToggleHide(false);
+            currentBush = null;
         }
     }
-
-    // private void OnCollisionEnter(Collision collision)
-    // {
-    //     if (collision.gameObject.CompareTag("sheep"))
-    //     {
-    //         Debug.Log("Collided with sheep");
-    //         Destroy(collision.gameObject);
-    //         gameplay.EatSheep();
-    //     }
-    //     else if (collision.gameObject.CompareTag("DombaSiluman"))
-    //     {
-    //         Debug.Log("Collided with DombaSiluman");
-    //         Destroy(collision.gameObject);
-    //         ApplySlowEffect();
-    //         MakeScreenDirty();
-    //         NotifyShepherd();
-    //     }
-    // }
 
     public void ApplySlowEffect()
     {
@@ -199,4 +124,10 @@ public class PlayerController : MonoBehaviour
             shepherd.ChasePlayer(transform);
         }
     }
+
+    public void SetHidden(bool hiddenStatus)
+    {
+        isHidden = hiddenStatus;
+    }
+
 }
