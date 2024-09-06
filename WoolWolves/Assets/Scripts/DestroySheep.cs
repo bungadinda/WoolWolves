@@ -1,28 +1,34 @@
 using UnityEngine;
-using UnityEngine.UI; // Tambahkan namespace UI
+using UnityEngine.UI;
 using System.Collections;
 
 public class DestroySheep : MonoBehaviour
 {
-    public float detectionRange = 3.0f; // Jarak dalam unit Unity di mana player dapat mendeteksi objek dengan tag "sheep"
+    public float detectionRange = 3.0f; // Jarak deteksi untuk objek dengan tag "sheep"
     public Gameplay gameplay; // Referensi ke script Gameplay
-    public AlarmSystem alarmSystem;
-    public Button eatSheepButton; // Tambahkan referensi ke Button
+    public AlarmSystem alarmSystem; // Referensi ke script AlarmSystem
+    public Button eatSheepButton; // Referensi ke button EatSheep
 
     void Start()
     {
         gameplay = FindObjectOfType<Gameplay>(); // Cari objek dengan script Gameplay
         alarmSystem = FindObjectOfType<AlarmSystem>(); // Cari objek dengan script AlarmSystem
+
+        if (eatSheepButton != null)
+        {
+            eatSheepButton.onClick.AddListener(DestroyNearbySheepButton); // Tambahkan listener untuk button
+        }
     }
 
     void Update()
     {
+        // Memeriksa input dari tombol Space untuk menghancurkan sheep
         if (Input.GetKeyDown(KeyCode.Space))
         {
-            DestroyNearbySheep(); // Panggil fungsi untuk menghancurkan domba saat tombol Space ditekan
+            DestroyNearbySheep(); // Panggil fungsi untuk menghancurkan sheep
             if (eatSheepButton != null)
             {
-                StartCoroutine(ButtonPressEffect()); // Jalankan coroutine untuk efek button
+                StartCoroutine(ButtonPressEffect()); // Efek pada button
             }
         }
     }
@@ -41,9 +47,19 @@ public class DestroySheep : MonoBehaviour
             if (distanceToSheep <= detectionRange)
             {
                 Vector3 deathLocation = sheep.transform.position;
-                gameplay.EatSheep();
+
+                // Pastikan gameplay tidak null sebelum memanggil EatSheep
+                if (gameplay != null)
+                {
+                    gameplay.EatSheep();
+                }
                 Destroy(sheep);
-                alarmSystem.TriggerAlarm(deathLocation);
+
+                // Pastikan alarmSystem tidak null sebelum memanggil TriggerAlarm
+                if (alarmSystem != null)
+                {
+                    alarmSystem.TriggerAlarm(deathLocation);
+                }
             }
         }
 
@@ -55,6 +71,8 @@ public class DestroySheep : MonoBehaviour
             if (distanceToDombaSiluman <= detectionRange)
             {
                 Destroy(dombaSiluman);
+
+                // Memastikan playerController tidak null
                 PlayerController playerController = GetComponent<PlayerController>();
                 if (playerController != null)
                 {
@@ -66,23 +84,26 @@ public class DestroySheep : MonoBehaviour
         }
     }
 
-    // Fungsi untuk button
+    // Fungsi untuk button "Eat Sheep"
     public void DestroyNearbySheepButton()
     {
-        
+        DestroyNearbySheep(); // Panggil fungsi yang sama dengan input Space
     }
 
-    // Coroutine untuk memberikan efek button
+    // Coroutine untuk efek button ketika ditekan
     private IEnumerator ButtonPressEffect()
     {
-        var buttonColors = eatSheepButton.colors;
-        Color originalColor = buttonColors.normalColor;
-        buttonColors.normalColor = buttonColors.pressedColor;
-        eatSheepButton.colors = buttonColors;
+        if (eatSheepButton != null)
+        {
+            var buttonColors = eatSheepButton.colors;
+            Color originalColor = buttonColors.normalColor;
+            buttonColors.normalColor = buttonColors.pressedColor;
+            eatSheepButton.colors = buttonColors;
 
-        yield return new WaitForSeconds(0.1f); // Durasi efek pressed color
+            yield return new WaitForSeconds(0.1f); // Durasi efek pressed color
 
-        buttonColors.normalColor = originalColor;
-        eatSheepButton.colors = buttonColors;
+            buttonColors.normalColor = originalColor;
+            eatSheepButton.colors = buttonColors;
+        }
     }
 }
