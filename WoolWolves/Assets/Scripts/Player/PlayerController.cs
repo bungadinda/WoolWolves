@@ -10,7 +10,6 @@ public class PlayerController : MonoBehaviour
     public Image dirtyScreenEffect;
     public bool isHidden { get; private set; }
 
-
     private BushHiding currentBush; // Referensi ke script BushHiding
 
     private void Start()
@@ -26,6 +25,8 @@ public class PlayerController : MonoBehaviour
 
     private void Update()
     {
+        if (!isMovable) return; // Jika pemain tidak bisa bergerak (misalnya saat game over), hentikan pergerakan
+
         RotatePlayer();
         MovePlayer();
     }
@@ -64,7 +65,8 @@ public class PlayerController : MonoBehaviour
             currentBush = other.GetComponent<BushHiding>();
             if (currentBush != null)
             {
-                currentBush.ToggleHide(true);
+                currentBush.ToggleHide(true); // Beritahu semak untuk menyembunyikan pemain
+                SetHidden(true); // Ubah status pemain menjadi tersembunyi
             }
         }
     }
@@ -73,7 +75,8 @@ public class PlayerController : MonoBehaviour
     {
         if (other.CompareTag("Bush") && currentBush != null && other.GetComponent<BushHiding>() == currentBush)
         {
-            currentBush.ToggleHide(false);
+            currentBush.ToggleHide(false); // Beritahu semak untuk menampilkan pemain
+            SetHidden(false); // Ubah status pemain menjadi tidak tersembunyi
             currentBush = null;
         }
     }
@@ -127,7 +130,7 @@ public class PlayerController : MonoBehaviour
 
     public void SetHidden(bool hiddenStatus)
     {
-        isHidden = hiddenStatus;
+        isHidden = hiddenStatus; // Atur status tersembunyi pemain
+        Debug.Log("Player hidden status set to: " + hiddenStatus);
     }
-
 }

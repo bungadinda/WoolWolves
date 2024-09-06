@@ -68,9 +68,6 @@ public class EnemyAI : MonoBehaviour
     // Memeriksa apakah player terlihat oleh enemy
     public bool PlayerInView()
     {
-        PlayerController playerController = player.GetComponent<PlayerController>();
-        if (playerController == null || playerController.isHidden) return false; // Jika player tersembunyi, tidak terlihat
-
         Collider[] targetsInViewRadius = Physics.OverlapSphere(transform.position, viewRadius, targetMask);
 
         foreach (Collider target in targetsInViewRadius)
@@ -82,13 +79,22 @@ public class EnemyAI : MonoBehaviour
             {
                 float distanceToTarget = Vector3.Distance(transform.position, targetTransform.position);
 
+                // Cek raycast untuk melihat apakah ada halangan
                 if (!Physics.Raycast(transform.position, directionToTarget, distanceToTarget, obstacleMask))
                 {
-                    if (!playerController.isHidden) // Jika player tidak bersembunyi
+                    PlayerController playerController = targetTransform.GetComponent<PlayerController>();
+                    if (playerController != null && playerController.isHidden)
                     {
-                        player = targetTransform;
-                        return true; // Player terlihat
+                        // Jika player tersembunyi, musuh tidak mendeteksi
+                        return false;
                     }
+
+                    player = targetTransform;
+                    return true; // Player terlihat
+                }
+                if (Physics.Raycast(transform.position, directionToTarget, out RaycastHit hit, distanceToTarget, obstacleMask))
+                {
+                    Debug.Log("Raycast hit: " + hit.collider.name);
                 }
             }
         }
@@ -182,6 +188,7 @@ public class EnemyAI : MonoBehaviour
         {
             return transform.position + dir * viewRadius; // Jika tidak ada halangan
         }
+
     }
 
     // Fungsi untuk memicu game over
@@ -190,8 +197,7 @@ public class EnemyAI : MonoBehaviour
         agent.isStopped = true; // Hentikan musuh
 
         // Hentikan pergerakan player
-        PlayerController playerController = player.GetComponent
-            <PlayerController>();
+        PlayerController playerController = player.GetComponent<PlayerController>();
         if (playerController != null)
         {
             playerController.SetMovable(false); // Hentikan pergerakan player
@@ -211,10 +217,19 @@ public class EnemyAI : MonoBehaviour
     public void ChasePlayer(Transform playerTransform)
     {
         PlayerController playerController = playerTransform.GetComponent<PlayerController>();
-        if (playerController != null && !playerController.isHidden) // Jika player tidak bersembunyi
+        if (playerController != null)
         {
-            player = playerTransform;
-            TransitionToState(new Chase()); // Ganti state ke Chase
+            if (!playerController.isHidden) // Jika player tidak bersembunyi
+            {
+                player = playerTransform;
+                TransitionToState(new Chase()); // Ganti state ke Chase
+            }
+            else
+            {
+                Debug.Log("Player is hidden, stop chasing");
+                // Transition to another state if needed, e.g., Patrol or Investigate
+                TransitionToState(new Patrol());
+            }
         }
     }
 
