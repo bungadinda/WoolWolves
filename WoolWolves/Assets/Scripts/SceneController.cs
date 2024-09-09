@@ -10,11 +10,18 @@ public class SceneController : MonoBehaviour
     private void Awake()
     {
         Instance = this;
+
+        
     }
     // Start is called before the first frame update
     void Start()
     {
         fadeAnim = GetComponent<Animator>();
+        fadeAnim.updateMode = AnimatorUpdateMode.UnscaledTime;
+        if(SceneManager.GetActiveScene().name == "Global Volume")
+        {
+            Time.timeScale = 0;
+        }
     }
 
     // Update is called once per frame
