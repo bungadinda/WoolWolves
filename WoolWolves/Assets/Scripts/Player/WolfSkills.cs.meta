@@ -4,10 +4,11 @@ MonoImporter:
   externalObjects: {}
   serializedVersion: 2
   defaultReferences:
-  - wolfPrefab: {fileID: 646945714974406220, guid: 61e60cc273fd9a0428a2f280c40e5016,
+  - wolfPrefab: {fileID: 919132149155446097, guid: 59dced2313631de47b72949a72e301df,
       type: 3}
   - sheepPrefab: {fileID: 8395585074212046321, guid: 77361e77201f941cbaae9e4345a2ffc9,
       type: 3}
+  - poofVFXPrefab: {instanceID: 0}
   executionOrder: 0
   icon: {instanceID: 0}
   userData: 
