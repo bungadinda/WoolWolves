@@ -9,6 +9,7 @@ public class clickAnimation : MonoBehaviour
     void Start()
     {
         animatorClick = GetComponent<Animator>();
+        animatorClick.updateMode = AnimatorUpdateMode.UnscaledTime;
     }
 
     // Update is called once per frame
@@ -30,6 +31,7 @@ public class clickAnimation : MonoBehaviour
     IEnumerator StartGame(string nameScene)
     {
         animatorClick.updateMode = AnimatorUpdateMode.UnscaledTime;
+        Debug.Log("Button Clicked with Animation");
         animatorClick.Play("button-clicked");
         yield return new WaitForSecondsRealtime(1f);
         SceneController.Instance.LoadToScene(nameScene);
