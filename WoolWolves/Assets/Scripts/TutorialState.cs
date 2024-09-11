@@ -30,18 +30,13 @@ public class TutorialState : MonoBehaviour
         // Ubah Time.timeScale menjadi 1 untuk memulai game
         // Time.timeScale = 1;
         // Mulai Coroutine untuk menunggu hingga animasi selesai
-        StartCoroutine(WaitForAnimationToEnd());
+        
         // Debug.Log("ok");
     }
 
-    IEnumerator WaitForAnimationToEnd()
-    {
-        Debug.Log("ok");
-        // Tunggu hingga animasi orang jatuh selesai
-
-        yield return new WaitForSecondsRealtime(12f);
+    public void WaitForAnimationToEnd()
+    {   
         // Setelah animasi selesai, ubah timescale menjadi 1 agar game dimulai
         Time.timeScale = 1;
-        Debug.Log("Game Started, TimeScale is now 1");
     }
 }
