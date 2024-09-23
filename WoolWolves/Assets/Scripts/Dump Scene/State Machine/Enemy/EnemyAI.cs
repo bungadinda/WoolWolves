@@ -17,6 +17,8 @@ public class EnemyAI : MonoBehaviour
     public ScreenFade screenFade; // Referensi untuk screen fade
     public int meshResolution = 10; // Resolusi view cone
     public Gameplay gameplay; // Referensi ke script Gameplay
+    public Material viewConeMaterial; // Material dengan Emission
+
 
     [HideInInspector] public Animator animator;
     [HideInInspector] public Transform player; // Referensi ke player
@@ -42,8 +44,21 @@ public class EnemyAI : MonoBehaviour
         viewMesh = new Mesh();
         viewMesh.name = "View Mesh";
         viewMeshFilter.mesh = viewMesh;
+
+        // Apply material with emission to the Mesh Renderer of the view cone
+        MeshRenderer viewMeshRenderer = viewMeshFilter.GetComponent<MeshRenderer>();
+        if (viewMeshRenderer != null && viewConeMaterial != null)
+        {
+            viewMeshRenderer.material = viewConeMaterial;
+
+            // Aktifkan emission secara permanen
+            viewConeMaterial.EnableKeyword("_EMISSION");
+            viewConeMaterial.SetColor("_EmissionColor", Color.yellow * 5.0f); // Warna koneng dengan intensitas tinggi
+        }
+
         TransitionToState(new Patrol()); // Mulai di state patrol
     }
+
 
     void Update()
     {
@@ -245,4 +260,23 @@ public class EnemyAI : MonoBehaviour
         Gizmos.DrawLine(transform.position, transform.position + viewAngleA * viewRadius);
         Gizmos.DrawLine(transform.position, transform.position + viewAngleB * viewRadius); // Gambar sudut pandangan
     }
+
+    void UpdateEmission(bool isPlayerDetected)
+    {
+        if (viewConeMaterial != null)
+        {
+            if (isPlayerDetected)
+            {
+                // Tingkatkan intensitas saat mendeteksi player
+                viewConeMaterial.SetColor("_EmissionColor", Color.yellow * 10.0f); // Intensitas lebih tinggi
+            }
+            else
+            {
+                // Warna normal jika tidak mendeteksi player
+                viewConeMaterial.SetColor("_EmissionColor", Color.yellow * 5.0f); // Intensitas normal
+            }
+        }
+    }
+
+
 }

@@ -1,40 +1,28 @@
-using System.Collections;
-using System.Collections.Generic;
+using System.Collections; // Ini diperlukan untuk IEnumerator
 using UnityEngine;
+using UnityEngine.SceneManagement; // Ini diperlukan untuk SceneManager
 
 public class clickAnimation : MonoBehaviour
 {
     private Animator animatorClick;
-    // Start is called before the first frame update
+
     void Start()
     {
         animatorClick = GetComponent<Animator>();
         animatorClick.updateMode = AnimatorUpdateMode.UnscaledTime;
     }
 
-    // Update is called once per frame
-    void Update()
+    public void LevelClicked(string sceneName)
     {
-        
+        StartCoroutine(StartGame(sceneName)); // Nama scene diterima sebagai parameter
     }
 
-    public void EndAnimation()
+    IEnumerator StartGame(string sceneName)
     {
-        animatorClick.SetTrigger("clicked");
-    }
-
-    public void LevelClicked(string nameScene)
-    {
-        StartCoroutine(StartGame(nameScene));
-    }
-
-    IEnumerator StartGame(string nameScene)
-    {
-        animatorClick.updateMode = AnimatorUpdateMode.UnscaledTime;
-        Debug.Log("Button Clicked with Animation");
         animatorClick.Play("button-clicked");
         yield return new WaitForSecondsRealtime(1f);
-        SceneController.Instance.LoadToScene(nameScene);
+
+        // Pastikan nama scene yang kamu masukkan valid
+        SceneManager.LoadScene(sceneName); // Pindah ke scene baru
     }
 }
-
