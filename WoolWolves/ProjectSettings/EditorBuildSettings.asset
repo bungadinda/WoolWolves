@@ -14,4 +14,7 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/CusScene.unity
     guid: ab78f40a186e7654a8192ecd5397babc
+  - enabled: 1
+    path: Assets/Scenes/Layar Tutor.unity
+    guid: c3f3cd865d2bee942b5ec2c299fd851c
   m_configObjects: {}

@@ -1,6 +1,7 @@
 using UnityEngine;
 using UnityEngine.UI;
 using System.Collections;
+using UnityEditor;
 
 public class DestroySheep : MonoBehaviour
 {
@@ -8,14 +9,14 @@ public class DestroySheep : MonoBehaviour
     public Gameplay gameplay;
     public AlarmSystem alarmSystem;
     public Button eatSheepButton;
-    public ParticleSystem slowEffect; // Tambahkan referensi untuk efek slow VFX
+    public ParticleSystem slowEffect; // Referensi untuk efek slow VFX
     public float slowDuration = 4f;   // Durasi slow
 
     void Start()
     {
         gameplay = FindObjectOfType<Gameplay>();
         alarmSystem = FindObjectOfType<AlarmSystem>();
-        
+
         if (eatSheepButton != null)
         {
             eatSheepButton.onClick.AddListener(DestroyNearbySheepButton);
@@ -39,19 +40,29 @@ public class DestroySheep : MonoBehaviour
         GameObject[] sheepObjects = GameObject.FindGameObjectsWithTag("sheep");
         GameObject[] dombaSilumanObjects = GameObject.FindGameObjectsWithTag("DombaSiluman");
 
-        foreach (GameObject sheep in sheepObjects)
+        // Hancurkan domba normal
+        foreach (GameObject sheepObject in sheepObjects)
         {
-            float distanceToSheep = Vector3.Distance(transform.position, sheep.transform.position);
+            float distanceToSheep = Vector3.Distance(transform.position, sheepObject.transform.position);
 
             if (distanceToSheep <= detectionRange)
             {
-                Vector3 deathLocation = sheep.transform.position;
+                Vector3 deathLocation = sheepObject.transform.position;
 
-                if (gameplay != null)
-                {
-                    gameplay.EatSheep();
-                }
-                Destroy(sheep);
+                // Pastikan gameplay bukan null
+                    if (gameplay != null)
+                    {
+                        Sheep sheepComponent = sheepObject.GetComponent<Sheep>(); // Ambil komponen Sheep
+                        if (sheepComponent != null && !sheepComponent.isEaten)
+                        {
+                            gameplay.EatSheep(); // Panggil fungsi EatSheep
+                            sheepComponent.isEaten = true; // Tandai domba ini sudah dimakan
+                            sheepComponent.OnEaten(); // Panggil efek saat domba dimakan
+                        }
+                    }
+                
+
+                Destroy(sheepObject); // Hapus objek domba
 
                 if (alarmSystem != null)
                 {
@@ -60,13 +71,14 @@ public class DestroySheep : MonoBehaviour
             }
         }
 
+        // Hancurkan domba siluman
         foreach (GameObject dombaSiluman in dombaSilumanObjects)
         {
             float distanceToDombaSiluman = Vector3.Distance(transform.position, dombaSiluman.transform.position);
 
             if (distanceToDombaSiluman <= detectionRange)
             {
-                Destroy(dombaSiluman);
+                Destroy(dombaSiluman); // Hapus objek domba siluman
 
                 PlayerController playerController = GetComponent<PlayerController>();
                 if (playerController != null)
@@ -122,5 +134,4 @@ public class DestroySheep : MonoBehaviour
         slowEffect.gameObject.SetActive(false);
         Debug.Log("Sfx Slow Effect Inactive");
     }
-
 }

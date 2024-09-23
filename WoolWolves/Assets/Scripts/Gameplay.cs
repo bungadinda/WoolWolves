@@ -59,8 +59,8 @@ public class Gameplay : MonoBehaviour
 
     public void EatSheep()
     {
-        sheepEaten += 1;
-        Debug.Log(sheepEaten);
+        sheepEaten += 1; // Tambah 1 ke sheepEaten
+        Debug.Log("Sheep eaten: " + sheepEaten);
         UpdateSheepCounter();
 
         if (sheepEaten >= targetSheep)
