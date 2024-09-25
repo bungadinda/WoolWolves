@@ -1,10 +1,13 @@
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class PauseMenu : MonoBehaviour
 {
     public GameObject pauseMenuUI; // Referensi ke UI Pause Menu
+    public GameObject DeactivateUIwhenpause;
     private bool isPaused = false; // Status apakah permainan sedang pause atau tidak
+    
 
     void Update()
     {
@@ -29,6 +32,7 @@ public class PauseMenu : MonoBehaviour
         Time.timeScale = 1f; // Resume permainan dengan mengatur time scale ke 1
         isPaused = false; // Set status pause ke false
         Debug.Log("Game Resume");
+        DeactivateUIwhenpause.SetActive(true);
     }
 
     void Pause()
@@ -37,6 +41,7 @@ public class PauseMenu : MonoBehaviour
         Time.timeScale = 0f; // Hentikan permainan dengan mengatur time scale ke 0
         isPaused = true; // Set status pause ke true
         Debug.Log("Game Paused");
+        DeactivateUIwhenpause.SetActive(false);
     }
 
     public void LoadMainMenu()
