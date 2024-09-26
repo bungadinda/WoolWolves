@@ -759,6 +759,7 @@ GameObject:
   - component: {fileID: 437603223}
   - component: {fileID: 437603222}
   - component: {fileID: 437603225}
+  - component: {fileID: 437603226}
   m_Layer: 5
   m_Name: MainMenuBG
   m_TagString: Untagged
@@ -869,6 +870,29 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ec3c22ce2228d4b8ab76d3d86cafe0c0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  animator: {fileID: 437603226}
+  nextSceneName: Global Volume
+--- !u!95 &437603226
+Animator:
+  serializedVersion: 5
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 437603220}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 36afba5b9eb6842108a913037a0a5462, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
 --- !u!1 &476234001
 GameObject:
   m_ObjectHideFlags: 0
@@ -2346,7 +2370,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 248.95996, y: -44}
+  m_AnchoredPosition: {x: 248.95996, y: -44.000122}
   m_SizeDelta: {x: 129.2078, y: 506.8688}
   m_Pivot: {x: 0.66358906, y: 0.868133}
 --- !u!114 &1564114275
@@ -3122,7 +3146,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &2051317522
 RectTransform:
   m_ObjectHideFlags: 0
@@ -3142,8 +3166,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -3.9995117, y: 1}
-  m_SizeDelta: {x: 0, y: 0}
+  m_AnchoredPosition: {x: -3.5688477, y: 1}
+  m_SizeDelta: {x: 3.7661, y: 0}
   m_Pivot: {x: 0.11433778, y: 0.080056585}
 --- !u!114 &2051317523
 MonoBehaviour:
