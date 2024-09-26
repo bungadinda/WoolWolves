@@ -1,23 +1,38 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class CutsceneController : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
+    public Animator animator; // Reference ke Animator yang menjalankan animasi
+    public string nextSceneName; // Nama scene yang ingin dituju setelah animasi
 
-    // Update is called once per frame
+    // Method ini akan dipanggil ketika animasi selesai
     void Update()
     {
-        
+        // Cek apakah tombol Esc ditekan
+        if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            SkipCutscene();
+        }
     }
 
-    public void SwitchToGameplay()
+    // Method ini akan dipanggil ketika animasi selesai
+    public void OnAnimationEnd()
     {
-        SceneController.Instance.LoadToScene("Global Volume");
+        LoadNextScene();
+    }
+
+    // Method untuk skip cutscene
+    public void SkipCutscene()
+    {
+        LoadNextScene(); // Pindah ke scene berikutnya saat skip
+    }
+
+    // Method untuk memuat scene berikutnya
+    private void LoadNextScene()
+    {
+        SceneManager.LoadScene(nextSceneName);
     }
 }
