@@ -1,21 +1,31 @@
 using UnityEngine;
 using UnityEngine.UI;
 using System.Collections;
-using UnityEditor;
 
 public class DestroySheep : MonoBehaviour
 {
-    public float detectionRange = 3.0f;
-    public Gameplay gameplay;
-    public AlarmSystem alarmSystem;
-    public Button eatSheepButton;
-    public ParticleSystem slowEffect; // Referensi untuk efek slow VFX
-    public float slowDuration = 4f;   // Durasi slow
+    public float detectionRange = 5.0f; // Periksa jarak deteksi
+    public Gameplay gameplay; // Referensi ke script Gameplay untuk menghitung domba yang dimakan
+    public AlarmSystem alarmSystem; // Referensi ke AlarmSystem untuk mengaktifkan alarm
+    public Button eatSheepButton; // Tombol untuk memakan domba
+    public ParticleSystem slowEffect; // Efek VFX saat domba siluman dimakan
+    public float slowDuration = 4f; // Durasi efek slow
 
     void Start()
     {
+        // Cari script Gameplay dan AlarmSystem di scene
         gameplay = FindObjectOfType<Gameplay>();
         alarmSystem = FindObjectOfType<AlarmSystem>();
+
+        if (gameplay == null)
+        {
+            Debug.LogError("Gameplay script not found!");
+        }
+
+        if (alarmSystem == null)
+        {
+            Debug.LogWarning("AlarmSystem not found in the scene.");
+        }
 
         if (eatSheepButton != null)
         {
@@ -25,6 +35,7 @@ public class DestroySheep : MonoBehaviour
 
     void Update()
     {
+        // Tombol Space untuk memakan domba
         if (Input.GetKeyDown(KeyCode.Space))
         {
             DestroyNearbySheep();
@@ -35,39 +46,54 @@ public class DestroySheep : MonoBehaviour
         }
     }
 
+    // Fungsi utama untuk memakan domba di sekitar
     public void DestroyNearbySheep()
     {
+        // Cari semua objek domba biasa
         GameObject[] sheepObjects = GameObject.FindGameObjectsWithTag("sheep");
         GameObject[] dombaSilumanObjects = GameObject.FindGameObjectsWithTag("DombaSiluman");
 
-        // Hancurkan domba normal
+        Debug.Log("Attempting to destroy sheep. Sheep count: " + sheepObjects.Length);
+
+        // Hancurkan domba biasa
         foreach (GameObject sheepObject in sheepObjects)
         {
             float distanceToSheep = Vector3.Distance(transform.position, sheepObject.transform.position);
 
             if (distanceToSheep <= detectionRange)
             {
-                Vector3 deathLocation = sheepObject.transform.position;
+                Debug.Log("Sheep within range!");
 
-                // Pastikan gameplay bukan null
-                    if (gameplay != null)
+                if (gameplay != null)
+                {
+                    Sheep sheepComponent = sheepObject.GetComponent<Sheep>();
+                    if (sheepComponent != null && !sheepComponent.isEaten)
                     {
-                        Sheep sheepComponent = sheepObject.GetComponent<Sheep>(); // Ambil komponen Sheep
-                        if (sheepComponent != null && !sheepComponent.isEaten)
-                        {
-                            gameplay.EatSheep(); // Panggil fungsi EatSheep
-                            sheepComponent.isEaten = true; // Tandai domba ini sudah dimakan
-                            sheepComponent.OnEaten(); // Panggil efek saat domba dimakan
-                        }
+                        gameplay.EatSheep(); // Tambahkan jumlah domba yang dimakan
+                        Debug.Log("Sheep eaten, updating counter.");
+                        sheepComponent.isEaten = true; // Tandai domba sebagai sudah dimakan
+                        sheepComponent.OnEaten(); // Panggil efek visual atau suara
                     }
-                
+                    else
+                    {
+                        Debug.LogWarning("Sheep component not found or sheep already eaten.");
+                    }
+                }
+                else
+                {
+                    Debug.LogError("Gameplay script is missing!");
+                }
 
-                Destroy(sheepObject); // Hapus objek domba
+                Destroy(sheepObject); // Hancurkan domba
 
                 if (alarmSystem != null)
                 {
-                    alarmSystem.TriggerAlarm(deathLocation);
+                    alarmSystem.TriggerAlarm(sheepObject.transform.position); // Aktifkan alarm di lokasi domba dimakan
                 }
+            }
+            else
+            {
+                Debug.Log("Sheep too far away.");
             }
         }
 
@@ -78,32 +104,46 @@ public class DestroySheep : MonoBehaviour
 
             if (distanceToDombaSiluman <= detectionRange)
             {
-                Destroy(dombaSiluman); // Hapus objek domba siluman
+                Debug.Log("Domba Siluman within range!");
+
+                // Tidak menambah countersheep untuk domba siluman
+                Destroy(dombaSiluman); // Hancurkan domba siluman
+
+                if (alarmSystem != null)
+                {
+                    alarmSystem.TriggerAlarm(dombaSiluman.transform.position); // Aktifkan alarm di lokasi domba siluman
+                }
 
                 PlayerController playerController = GetComponent<PlayerController>();
                 if (playerController != null)
                 {
-                    playerController.ApplySlowEffect();
-                    playerController.MakeScreenDirty();
-                    playerController.NotifyShepherd();
+                    playerController.ApplySlowEffect(); // Efek slow ke pemain
+                    playerController.MakeScreenDirty(); // Munculkan efek layar kotor
+                    playerController.NotifyShepherd(); // Notifikasi ke pemain
                 }
 
                 // Aktifkan efek slow VFX
                 if (slowEffect != null)
                 {
-                    Debug.Log("activate vfx");
                     StartCoroutine(TriggerSlowEffect());
                 }
             }
+            else
+            {
+                Debug.Log("Domba Siluman too far away.");
+            }
         }
+
+        Debug.Log("Nearby sheep and domba siluman processed.");
     }
 
-    // Fungsi untuk button "Eat Sheep"
+    // Fungsi untuk tombol "Eat Sheep"
     public void DestroyNearbySheepButton()
     {
         DestroyNearbySheep();
     }
 
+    // Coroutine untuk memberikan efek ke tombol
     private IEnumerator ButtonPressEffect()
     {
         if (eatSheepButton != null)

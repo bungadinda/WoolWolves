@@ -69,6 +69,16 @@ public class Gameplay : MonoBehaviour
         }
     }
 
+    void OnCollisionEnter(Collision collision)
+    {
+        if (collision.gameObject.CompareTag("sheep"))
+        {
+            EatSheep();
+            Destroy(collision.gameObject); // Hapus domba setelah dimakan
+        }
+    }
+
+
     public void WinGame()
     {
         // Implementasi kemenangan permainan
